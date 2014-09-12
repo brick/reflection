@@ -2,8 +2,6 @@
 
 namespace Brick\Reflection;
 
-use Brick\FileSystem\FileSystem;
-
 use Doctrine\Common\Annotations\TokenParser;
 
 /**
@@ -29,8 +27,7 @@ class ImportResolver
      * @param \Reflector $context A reflection of the context in which the types will be resolved.
      *                            The context can be a class, property, method or parameter.
      *
-     * @throws \InvalidArgumentException             If the class or file name cannot be inferred from the context.
-     * @throws \Brick\FileSystem\FileSystemException If the file cannot be read.
+     * @throws \InvalidArgumentException If the class or file name cannot be inferred from the context.
      */
     public function __construct(\Reflector $context)
     {
@@ -46,7 +43,12 @@ class ImportResolver
             throw $this->invalidArgumentException('file name', $context);
         }
 
-        $source = (new FileSystem())->read($fileName);
+        $source = @ file_get_contents($fileName);
+
+        if ($source === false) {
+            throw new \RuntimeException('Could not read ' . $fileName);
+        }
+
         $parser = new TokenParser($source);
 
         $this->namespace = $class->getNamespaceName();
