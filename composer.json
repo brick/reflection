@@ -1,0 +1,24 @@
+{
+    "name": "brick/reflection",
+    "description": "Low-level tools to extend PHP reflection capabilities",
+    "type": "library",
+    "keywords": [
+        "Brick",
+        "Reflection"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.5",
+        "doctrine/annotations": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*",
+        "satooshi/php-coveralls": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Brick\\Reflection\\": "src/",
+            "Brick\\Reflection\\Tests\\": "tests/"
+        }
+    }
+}
