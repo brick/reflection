@@ -1,6 +1,6 @@
 <?php
 
-namespace Brick\Tests\Reflection;
+namespace Brick\Reflection\Tests;
 
 use Brick\Reflection\ReflectionTools;
 
