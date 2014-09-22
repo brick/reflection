@@ -227,6 +227,56 @@ class ReflectionTools
     }
 
     /**
+     * Exports the function signature.
+     *
+     * @param \ReflectionFunctionAbstract $function The function to export.
+     *
+     * @return string
+     */
+    public function exportFunction(\ReflectionFunctionAbstract $function)
+    {
+        $result = '';
+
+        if ($function instanceof \ReflectionMethod) {
+            foreach (\Reflection::getModifierNames($function->getModifiers()) as $modifier) {
+                $result .= $modifier . ' ';
+            }
+        }
+
+        $result .= 'function ' . $function->getShortName() . '(';
+
+        foreach ($function->getParameters() as $key => $parameter) {
+            if ($key !== 0) {
+                $result .= ', ';
+            }
+
+            if ($parameter->isArray()) {
+                $result .= 'array ';
+            } elseif ($parameter->isCallable()) {
+                $result .= 'callable ';
+            } elseif ($type = $parameter->getClass()) {
+                $result .= '\\' .  $type->getName() . ' ';
+            }
+
+            if ($parameter->isPassedByReference()) {
+                $result .= '& ';
+            }
+
+            $result .= '$' . $parameter->getName();
+
+            if ($parameter->isDefaultValueAvailable()) {
+                if ($parameter->isDefaultValueConstant()) {
+                    $result .= ' = ' . $parameter->getDefaultValueConstantName();
+                } else {
+                    $result .= ' = ' . var_export($parameter->getDefaultValue(), true);
+                }
+            }
+        }
+
+        return $result . ')';
+    }
+
+    /**
      * Caches the output of a worker function.
      *
      * @param string   $method   The name of the calling method.

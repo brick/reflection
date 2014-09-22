@@ -100,6 +100,31 @@ class ReflectionToolsTest extends \PHPUnit_Framework_TestCase
             ]]
         ];
     }
+
+    /**
+     * @dataProvider providerExportFunction
+     *
+     * @param string $method
+     * @param string $expected
+     */
+    public function testExportFunction($method, $expected)
+    {
+        $tools = new ReflectionTools();
+        $function = new \ReflectionMethod(__NAMESPACE__ . '\Export', $method);
+        $this->assertSame($expected, $tools->exportFunction($function));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerExportFunction()
+    {
+        return [
+            ['a', 'final public function a(\Brick\Reflection\Tests\A $a, \stdClass $b)'],
+            ['b', 'public static function b(array & $a, callable $b = NULL)'],
+            ['c', 'abstract protected function c($a = 1, $b = 0.5, $c = \'test\', $eol = PHP_EOL)']
+        ];
+    }
 }
 
 class A
@@ -144,4 +169,11 @@ class S
     private static function a() {}
     protected static function b() {}
     public static function c() {}
+}
+
+abstract class Export
+{
+    final public function a(A $a, \stdClass $b) {}
+    public static function b(array & $a, callable $b = null) {}
+    abstract protected function c($a = 1, $b = 0.5, $c = 'test', $eol = \PHP_EOL);
 }
