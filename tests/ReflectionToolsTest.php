@@ -104,14 +104,15 @@ class ReflectionToolsTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider providerExportFunction
      *
-     * @param string $method
-     * @param string $expected
+     * @param string  $method
+     * @param integer $excludeModifiers
+     * @param string  $expected
      */
-    public function testExportFunction($method, $expected)
+    public function testExportFunction($method, $excludeModifiers, $expected)
     {
         $tools = new ReflectionTools();
         $function = new \ReflectionMethod(__NAMESPACE__ . '\Export', $method);
-        $this->assertSame($expected, $tools->exportFunction($function));
+        $this->assertSame($expected, $tools->exportFunction($function, $excludeModifiers));
     }
 
     /**
@@ -120,9 +121,10 @@ class ReflectionToolsTest extends \PHPUnit_Framework_TestCase
     public function providerExportFunction()
     {
         return [
-            ['a', 'final public function a(\Brick\Reflection\Tests\A $a, \stdClass $b)'],
-            ['b', 'public static function b(array & $a, callable $b = NULL)'],
-            ['c', 'abstract protected function c($a = 1, $b = 0.5, $c = \'test\', $eol = PHP_EOL)']
+            ['a', 0, 'final public function a(\Brick\Reflection\Tests\A $a, \stdClass $b)'],
+            ['b', 0, 'public static function b(array & $a, callable $b = NULL)'],
+            ['c', 0, 'abstract protected function c($a = 1, $b = 0.5, $c = \'test\', $eol = PHP_EOL)'],
+            ['c', \ReflectionMethod::IS_ABSTRACT, 'protected function c($a = 1, $b = 0.5, $c = \'test\', $eol = PHP_EOL)']
         ];
     }
 }

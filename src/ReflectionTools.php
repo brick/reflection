@@ -229,16 +229,20 @@ class ReflectionTools
     /**
      * Exports the function signature.
      *
-     * @param \ReflectionFunctionAbstract $function The function to export.
+     * @param \ReflectionFunctionAbstract $function         The function to export.
+     * @param integer                     $excludeModifiers An optional bitmask of modifiers to exclude.
      *
      * @return string
      */
-    public function exportFunction(\ReflectionFunctionAbstract $function)
+    public function exportFunction(\ReflectionFunctionAbstract $function, $excludeModifiers = 0)
     {
         $result = '';
 
         if ($function instanceof \ReflectionMethod) {
-            foreach (\Reflection::getModifierNames($function->getModifiers()) as $modifier) {
+            $modifiers = $function->getModifiers();
+            $modifiers &= ~ $excludeModifiers;
+
+            foreach (\Reflection::getModifierNames($modifiers) as $modifier) {
                 $result .= $modifier . ' ';
             }
         }
