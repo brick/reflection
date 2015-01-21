@@ -3,8 +3,8 @@ Brick\Reflection
 
 A collection of low-level tools to extend PHP reflection capabilities.
 
-[![Build Status](https://secure.travis-ci.org/brick/reflection.png?branch=master)](http://travis-ci.org/brick/reflection)
-[![Coverage Status](https://coveralls.io/repos/brick/reflection/badge.png?branch=master)](https://coveralls.io/r/brick/reflection?branch=master)
+[![Build Status](https://secure.travis-ci.org/brick/reflection.svg?branch=master)](http://travis-ci.org/brick/reflection)
+[![Coverage Status](https://coveralls.io/repos/brick/reflection/badge.svg?branch=master)](https://coveralls.io/r/brick/reflection?branch=master)
 
 Installation
 ------------
@@ -21,4 +21,6 @@ Just define the following requirement in your `composer.json` file:
 Requirements
 ------------
 
-This library requires PHP 5.5 or [HHVM](http://hhvm.com/) 3.0.
+This library requires PHP 5.5.
+
+HHVM support is in the works, we are waiting for [this bug](https://github.com/facebook/hhvm/issues/3812) to be fixed.
