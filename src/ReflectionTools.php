@@ -247,7 +247,20 @@ class ReflectionTools
             }
         }
 
-        $result .= 'function ' . $function->getShortName() . '(';
+        $result .= 'function ' . $function->getShortName();
+        $result .= '(' . $this->exportFunctionParameters($function) . ')';
+
+        return $result;
+    }
+
+    /**
+     * @param \ReflectionFunctionAbstract $function
+     *
+     * @return string
+     */
+    public function exportFunctionParameters(\ReflectionFunctionAbstract $function)
+    {
+        $result = '';
 
         foreach ($function->getParameters() as $key => $parameter) {
             if ($key !== 0) {
@@ -277,7 +290,7 @@ class ReflectionTools
             }
         }
 
-        return $result . ')';
+        return $result;
     }
 
     /**
