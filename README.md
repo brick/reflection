@@ -21,6 +21,4 @@ Just define the following requirement in your `composer.json` file:
 Requirements
 ------------
 
-This library requires PHP 5.5.
-
-HHVM support is in the works, we are waiting for [this bug](https://github.com/facebook/hhvm/issues/3812) to be fixed.
+This library requires PHP 5.5 or HHVM.
