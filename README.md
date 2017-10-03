@@ -16,13 +16,13 @@ Just define the following requirement in your `composer.json` file:
 
     {
         "require": {
-            "brick/reflection": "0.1.*"
+            "brick/reflection": "0.2.*"
         }
     }
 
 ## Requirements
 
-This library requires PHP 5.6 or HHVM.
+This library requires PHP 7.1 or later. For PHP 5.6 and PHP 7.0 compatibility, use version `0.1`.
 
 # Documentation
 
