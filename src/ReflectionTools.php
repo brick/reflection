@@ -273,8 +273,10 @@ class ReflectionTools
                 $result .= 'array ';
             } elseif ($parameter->isCallable()) {
                 $result .= 'callable ';
-            } elseif ($type = $parameter->getClass()) {
-                $result .= '\\' .  $type->getName() . ' ';
+            } elseif ($class = $parameter->getClass()) {
+                $result .= '\\' .  $class->getName() . ' ';
+            } elseif ($type = $parameter->getType()) {
+                $result .= $type->getName() . ' ';
             }
 
             if ($parameter->isPassedByReference()) {
