@@ -252,6 +252,16 @@ class ReflectionTools
         $result .= 'function ' . $function->getShortName();
         $result .= '(' . $this->exportFunctionParameters($function) . ')';
 
+        if (null !== $returnType = $function->getReturnType()) {
+            $result .= ' : ';
+
+            if (! $returnType->isBuiltin()) {
+                $result .= '\\';
+            }
+
+            $result .= $returnType->getName();
+        }
+
         return $result;
     }
 
@@ -273,9 +283,11 @@ class ReflectionTools
                 $result .= 'array ';
             } elseif ($parameter->isCallable()) {
                 $result .= 'callable ';
-            } elseif ($class = $parameter->getClass()) {
-                $result .= '\\' .  $class->getName() . ' ';
-            } elseif ($type = $parameter->getType()) {
+            } elseif (null !== $type = $parameter->getType()) {
+                if (! $type->isBuiltin()) {
+                    $result .= '\\';
+                }
+
                 $result .= $type->getName() . ' ';
             }
 

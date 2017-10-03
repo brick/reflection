@@ -122,9 +122,9 @@ class ReflectionToolsTest extends \PHPUnit_Framework_TestCase
     {
         return [
             ['a', 0, 'final public function a(\Brick\Reflection\Tests\A $a, \stdClass $b)'],
-            ['b', 0, 'public static function b(array & $a, callable $b = NULL)'],
-            ['c', 0, 'abstract protected function c(int $a = 1, float $b = 0.5, string $c = \'test\', $eol = PHP_EOL)'],
-            ['c', \ReflectionMethod::IS_ABSTRACT, 'protected function c(int $a = 1, float $b = 0.5, string $c = \'test\', $eol = PHP_EOL)']
+            ['b', 0, 'public static function b(array & $a, callable $b = NULL) : \PDO'],
+            ['b', \ReflectionMethod::IS_STATIC, 'public function b(array & $a, callable $b = NULL) : \PDO'],
+            ['c', 0, 'abstract protected function c(int $a = 1, float $b = 0.5, string $c = \'test\', $eol = PHP_EOL) : string'],
         ];
     }
 }
@@ -176,6 +176,6 @@ class S
 abstract class Export
 {
     final public function a(A $a, \stdClass $b) {}
-    public static function b(array & $a, callable $b = null) {}
-    abstract protected function c(int $a = 1, float $b = 0.5, string $c = 'test', $eol = \PHP_EOL);
+    public static function b(array & $a, callable $b = null) : \PDO {}
+    abstract protected function c(int $a = 1, float $b = 0.5, string $c = 'test', $eol = \PHP_EOL) : string;
 }
