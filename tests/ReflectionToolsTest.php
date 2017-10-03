@@ -4,10 +4,12 @@ namespace Brick\Reflection\Tests;
 
 use Brick\Reflection\ReflectionTools;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Unit tests for class ReflectionTools.
  */
-class ReflectionToolsTest extends \PHPUnit_Framework_TestCase
+class ReflectionToolsTest extends TestCase
 {
     public function testGetMethodsDoesNotReturnStaticMethods()
     {

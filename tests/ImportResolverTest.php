@@ -5,10 +5,12 @@ namespace Brick\Reflection\Tests;
 use Brick\Reflection\ImportResolver;
 use Brick\Reflection\ReflectionTools as Tools;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Unit tests for the ImportResolver class.
  */
-class ImportResolverTest extends \PHPUnit_Framework_TestCase
+class ImportResolverTest extends TestCase
 {
     /**
      * @param string $expectedFqcn
