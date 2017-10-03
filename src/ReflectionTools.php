@@ -28,7 +28,7 @@ class ReflectionTools
      *
      * @return \ReflectionMethod[]
      */
-    public function getClassMethods(\ReflectionClass $class)
+    public function getClassMethods(\ReflectionClass $class) : array
     {
         $classes = $this->getClassHierarchy($class);
 
@@ -63,7 +63,7 @@ class ReflectionTools
      *
      * @return \ReflectionProperty[]
      */
-    public function getClassProperties(\ReflectionClass $class)
+    public function getClassProperties(\ReflectionClass $class) : array
     {
         $classes = $this->getClassHierarchy($class);
 
@@ -95,7 +95,7 @@ class ReflectionTools
      *
      * @return \ReflectionClass[]
      */
-    public function getClassHierarchy(\ReflectionClass $class)
+    public function getClassHierarchy(\ReflectionClass $class) : array
     {
         $classes = [];
 
@@ -114,7 +114,7 @@ class ReflectionTools
      *
      * @return \ReflectionFunctionAbstract
      */
-    public function getReflectionFunction(callable $function)
+    public function getReflectionFunction(callable $function) : \ReflectionFunctionAbstract
     {
         if (is_array($function)) {
             return new \ReflectionMethod($function[0], $function[1]);
@@ -138,7 +138,7 @@ class ReflectionTools
      *
      * @return array
      */
-    public function getFunctionParameterTypes(\ReflectionFunctionAbstract $function)
+    public function getFunctionParameterTypes(\ReflectionFunctionAbstract $function) : array
     {
         return $this->cache(__FUNCTION__, $function, function() use ($function) {
             preg_match_all('/@param\s+(\S+)\s+\$(\S+)/', $function->getDocComment(), $matches, PREG_SET_ORDER);
@@ -159,7 +159,7 @@ class ReflectionTools
      *
      * @return array
      */
-    public function getParameterTypes(\ReflectionParameter $parameter)
+    public function getParameterTypes(\ReflectionParameter $parameter) : array
     {
         $name = $parameter->getName();
         $function = $parameter->getDeclaringFunction();
@@ -175,7 +175,7 @@ class ReflectionTools
      *
      * @return array
      */
-    public function getPropertyTypes(\ReflectionProperty $property)
+    public function getPropertyTypes(\ReflectionProperty $property) : array
     {
         if (preg_match('/@var\s+(\S+)/', $property->getDocComment(), $matches) == 0) {
             return [];
@@ -191,7 +191,7 @@ class ReflectionTools
      *
      * @return string|null The class name, or null if not available.
      */
-    public function getPropertyClass(\ReflectionProperty $property)
+    public function getPropertyClass(\ReflectionProperty $property) : ?string
     {
         $types = $this->getPropertyTypes($property);
 
@@ -217,7 +217,7 @@ class ReflectionTools
      *
      * @return string
      */
-    public function getFunctionName(\ReflectionFunctionAbstract $function)
+    public function getFunctionName(\ReflectionFunctionAbstract $function) : string
     {
         if ($function instanceof \ReflectionMethod) {
             return $function->getDeclaringClass()->getName() . '::' . $function->getName();
@@ -234,7 +234,7 @@ class ReflectionTools
      *
      * @return string
      */
-    public function exportFunction(\ReflectionFunctionAbstract $function, $excludeModifiers = 0)
+    public function exportFunction(\ReflectionFunctionAbstract $function, int $excludeModifiers = 0) : string
     {
         $result = '';
 
@@ -258,7 +258,7 @@ class ReflectionTools
      *
      * @return string
      */
-    public function exportFunctionParameters(\ReflectionFunctionAbstract $function)
+    public function exportFunctionParameters(\ReflectionFunctionAbstract $function) : string
     {
         $result = '';
 
@@ -302,7 +302,7 @@ class ReflectionTools
      *
      * @return mixed The callback return value, potentially cached.
      */
-    private function cache($method, $object, callable $callback)
+    private function cache(string $method, $object, callable $callback)
     {
         $hash = spl_object_hash($object);
 

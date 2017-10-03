@@ -62,7 +62,7 @@ class ImportResolver
      *
      * @return \ReflectionClass|null
      */
-    private function getDeclaringClass(\Reflector $reflector)
+    private function getDeclaringClass(\Reflector $reflector) : ?\ReflectionClass
     {
         if ($reflector instanceof \ReflectionClass) {
             return $reflector;
@@ -89,7 +89,7 @@ class ImportResolver
      *
      * @return \InvalidArgumentException
      */
-    private function invalidArgumentException($inferring, \Reflector $reflector)
+    private function invalidArgumentException(string $inferring, \Reflector $reflector) : \InvalidArgumentException
     {
         return new \InvalidArgumentException(sprintf(
             'Cannot infer the %s from the given %s',
@@ -103,7 +103,7 @@ class ImportResolver
      *
      * @return string The fully qualified class name.
      */
-    public function resolve($type)
+    public function resolve(string $type) : string
     {
         $pos = strpos($type, '\\');
 
