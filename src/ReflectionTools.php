@@ -230,7 +230,7 @@ class ReflectionTools
      * Exports the function signature.
      *
      * @param \ReflectionFunctionAbstract $function         The function to export.
-     * @param integer                     $excludeModifiers An optional bitmask of modifiers to exclude.
+     * @param int                         $excludeModifiers An optional bitmask of modifiers to exclude.
      *
      * @return string
      */
