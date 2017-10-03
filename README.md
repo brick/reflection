@@ -75,6 +75,9 @@ $resolver = new ImportResolver($class);
 
 echo $resolver->resolve('\Some\FQCN\Class'); // Some\FQCN\Class
 echo $resolver->resolve('Something'); // App\Something
+echo $resolver->resolve('Something\Else'); // App\Something\Else
 echo $resolver->resolve('Bar'); // Foo\Bar
+echo $resolver->resolve('Bar\tender'); // Foo\Bar\tender
 echo $resolver->resolve('Alias'); // Foo\Bar\Baz
+echo $resolver->resolve('Alias\ooka'); // Foo\Bar\Baz\ooka
 ```
