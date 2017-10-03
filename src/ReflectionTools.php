@@ -255,6 +255,10 @@ class ReflectionTools
         if (null !== $returnType = $function->getReturnType()) {
             $result .= ' : ';
 
+            if ($returnType->allowsNull()) {
+                $result .= '?';
+            }
+
             if (! $returnType->isBuiltin()) {
                 $result .= '\\';
             }
@@ -279,6 +283,10 @@ class ReflectionTools
                 $result .= ', ';
             }
 
+            if ($parameter->allowsNull() && ! $parameter->isDefaultValueAvailable()) {
+                $result .= '?';
+            }
+
             if ($parameter->isArray()) {
                 $result .= 'array ';
             } elseif ($parameter->isCallable()) {
@@ -293,6 +301,10 @@ class ReflectionTools
 
             if ($parameter->isPassedByReference()) {
                 $result .= '& ';
+            }
+
+            if ($parameter->isVariadic()) {
+                $result .= '...';
             }
 
             $result .= '$' . $parameter->getName();
