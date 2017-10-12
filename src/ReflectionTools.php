@@ -179,7 +179,7 @@ class ReflectionTools
      */
     public function getPropertyTypes(\ReflectionProperty $property) : array
     {
-        if (preg_match('/@var\s+(\S+)/', $property->getDocComment(), $matches) == 0) {
+        if (preg_match('/@var\s+(\S+)/', $property->getDocComment(), $matches) !== 1) {
             return [];
         }
 
@@ -197,10 +197,10 @@ class ReflectionTools
     {
         $types = $this->getPropertyTypes($property);
 
-        if (count($types) == 1) {
+        if (count($types) === 1) {
             $type = $types[0];
 
-            if ($type[0] == '\\') {
+            if ($type[0] === '\\') {
                 return substr($type, 1);
             }
         }
