@@ -34,7 +34,6 @@ class ReflectionTools
     {
         $classes = $this->getClassHierarchy($class);
 
-        /** @var \ReflectionMethod[] $methods */
         $methods = [];
 
         foreach ($classes as $class) {
@@ -71,7 +70,6 @@ class ReflectionTools
     {
         $classes = $this->getClassHierarchy($class);
 
-        /** @var $properties \ReflectionProperty[] */
         $properties = [];
 
         foreach ($classes as $class) {
