@@ -279,11 +279,7 @@ class ReflectionTools
                 $result .= '?';
             }
 
-            if ($parameter->isArray()) {
-                $result .= 'array ';
-            } elseif ($parameter->isCallable()) {
-                $result .= 'callable ';
-            } elseif (null !== $type = $parameter->getType()) {
+            if (null !== $type = $parameter->getType()) {
                 if (! $type->isBuiltin()) {
                     $result .= '\\';
                 }
