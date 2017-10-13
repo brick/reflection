@@ -23,8 +23,8 @@ class ReflectionTools
     /**
      * Returns reflections of all the non-static methods that make up one object.
      *
-     * Methods for all classes in the hierarchy are returned.
-     * If protected/public methods are overridden, only the overriding method is returned.
+     * This returns the same methods as ReflectionClass::getMethods(),
+     * plus the private methods of all parent classes.
      *
      * @param \ReflectionClass $class
      *
@@ -36,31 +36,26 @@ class ReflectionTools
 
         $methods = [];
 
-        foreach ($classes as $class) {
-            foreach ($class->getMethods() as $method) {
+        foreach ($classes as $hClass) {
+            foreach ($hClass->getMethods() as $method) {
                 if ($method->isStatic()) {
                     continue;
                 }
 
-                $key = $method->isPrivate() ? ($method->class . ':' . $method->name) : $method->name;
-
-                if (isset($methods[$key])) {
-                    // Key needs to be unset first for the new element to be on top of the array.
-                    unset($methods[$key]);
+                if ($hClass === $class || $method->isPrivate()) {
+                    $methods[] = $method;
                 }
-
-                $methods[$key] = $method;
             }
         }
 
-        return array_values($methods);
+        return $methods;
     }
 
     /**
      * Returns reflections of all the non-static properties that make up one object.
      *
-     * Properties for all classes in the hierarchy are returned.
-     * If protected/public properties are overridden, only the overriding property is returned.
+     * This returns the same properties as ReflectionClass::getProperties(),
+     * plus the private properties of all parent classes.
      *
      * @param \ReflectionClass $class
      *
@@ -72,24 +67,19 @@ class ReflectionTools
 
         $properties = [];
 
-        foreach ($classes as $class) {
-            foreach ($class->getProperties() as $property) {
+        foreach ($classes as $hClass) {
+            foreach ($hClass->getProperties() as $property) {
                 if ($property->isStatic()) {
                     continue;
                 }
 
-                $key = $property->isPrivate() ? ($property->class . ':' . $property->name) : $property->name;
-
-                if (isset($properties[$key])) {
-                    // Key needs to be unset first for the new element to be on top of the array.
-                    unset($properties[$key]);
+                if ($hClass === $class || $property->isPrivate()) {
+                    $properties[] = $property;
                 }
-
-                $properties[$key] = $property;
             }
         }
 
-        return array_values($properties);
+        return $properties;
     }
 
     /**
