@@ -39,16 +39,18 @@ class ReflectionTools
 
         foreach ($classes as $class) {
             foreach ($class->getMethods() as $method) {
-                if (! $method->isStatic()) {
-                    $key = $method->isPrivate() ? ($method->class . ':' . $method->name) : $method->name;
-
-                    if (isset($methods[$key])) {
-                        // Key needs to be unset first for the new element to be on top of the array.
-                        unset($methods[$key]);
-                    }
-
-                    $methods[$key] = $method;
+                if ($method->isStatic()) {
+                    continue;
                 }
+
+                $key = $method->isPrivate() ? ($method->class . ':' . $method->name) : $method->name;
+
+                if (isset($methods[$key])) {
+                    // Key needs to be unset first for the new element to be on top of the array.
+                    unset($methods[$key]);
+                }
+
+                $methods[$key] = $method;
             }
         }
 
@@ -74,16 +76,18 @@ class ReflectionTools
 
         foreach ($classes as $class) {
             foreach ($class->getProperties() as $property) {
-                if (! $property->isStatic()) {
-                    $key = $property->isPrivate() ? ($property->class . ':' . $property->name) : $property->name;
-
-                    if (isset($properties[$key])) {
-                        // Key needs to be unset first for the new element to be on top of the array.
-                        unset($properties[$key]);
-                    }
-
-                    $properties[$key] = $property;
+                if ($property->isStatic()) {
+                    continue;
                 }
+
+                $key = $property->isPrivate() ? ($property->class . ':' . $property->name) : $property->name;
+
+                if (isset($properties[$key])) {
+                    // Key needs to be unset first for the new element to be on top of the array.
+                    unset($properties[$key]);
+                }
+
+                $properties[$key] = $property;
             }
         }
 
