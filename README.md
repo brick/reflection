@@ -34,8 +34,8 @@ This class is a collection of tools that build on top of PHP's reflection classe
 
 Just create an instance of `ReflectionTools` and you can use the following methods:
 
-- `getClassMethods()` returns reflections of all the non-static methods that make up one object.
-- `getClassProperties()` returns reflections of all the non-static properties that make up one object.
+- `getClassMethods()` returns reflections of all the non-static methods that make up one object, including private methods of parent classes.
+- `getClassProperties()` returns reflections of all the non-static properties that make up one object, including private properties of parent classes.
 - `getClassHierarchy()` returns the hierarchy of classes, starting from the first ancestor and ending with the class itself.
 - `getReflectionFunction()` returns a reflection object for any callable.
 - `getFunctionParameterTypes()` returns an associative array of the `@param` types documented on function parameters.
