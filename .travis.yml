@@ -1,4 +1,5 @@
 language: php
+sudo: false
 
 php:
   - 7.1
@@ -6,10 +7,8 @@ php:
   - hhvm
 
 before_script:
-    - composer install
-    - sudo apt-get update
-    - sudo apt-get install hhvm
-    - php --version
+  - if [[ $TRAVIS_PHP_VERSION = hhv* ]]; then echo hhvm.php7.all=1 >> /etc/hhvm/php.ini; fi
+  - composer install
 
 script:
   - mkdir -p build/logs
@@ -21,7 +20,3 @@ after_script:
 matrix:
   allow_failures:
     - php: hhvm
-
-sudo: required
-group: edge
-dist: trusty
