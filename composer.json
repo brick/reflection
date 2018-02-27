@@ -17,7 +17,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Brick\\Reflection\\": "src/",
+            "Brick\\Reflection\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Brick\\Reflection\\Tests\\": "tests/"
         }
     }
