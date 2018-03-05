@@ -21,53 +21,48 @@ class ReflectionToolsTest extends TestCase
 
     public function testGetReflectionFunction()
     {
-        $reflectionFunc = function()
-        {
-            return 'reflectedFunction';
-        };
-        $functions = (new ReflectionTools)->getReflectionFunction($reflectionFunc);
+        $reflectionFunc = function() {};
+        $function = (new ReflectionTools)->getReflectionFunction($reflectionFunc);
 
-        $this->assertCount(0, $functions->getParameters());
+        $this->assertInstanceOf(\ReflectionFunction::class, $function);
+        $this->assertSame('Brick\Reflection\Tests\{closure}', $function->getName());
     }
 
     public function testGetFunctionParameterTypesShouldReturnEmptyArray()
     {
-        $functions = (new ReflectionTools)->getFunctionParameterTypes(new \ReflectionFunction('Brick\Reflection\Tests\reflectedFunc'));
+        $types = (new ReflectionTools)->getFunctionParameterTypes(new \ReflectionFunction('Brick\Reflection\Tests\reflectedFunc'));
 
-        $this->assertCount(0, $functions);
-        $this->assertSame([], $functions);
+        $this->assertSame([], $types);
     }
 
     public function testGetFunctionParameterTypesShouldReturnTypesArray()
     {
-        $functions = (new ReflectionTools)->getFunctionParameterTypes(new \ReflectionFunction('Brick\Reflection\Tests\reflectedParameterFunc'));
+        $types = (new ReflectionTools)->getFunctionParameterTypes(new \ReflectionFunction('Brick\Reflection\Tests\reflectedParameterFunc'));
 
-        $this->assertCount(1, $functions);
-        $this->assertSame('string', $functions['arg'][0]);
+        $this->assertSame(['arg' => ['string']], $types);
     }
 
     public function testGetParameterTypesShouldReturnTypeArray()
     {
-        $parameters = (new ReflectionTools)->getParameterTypes(new \ReflectionParameter([
+        $types = (new ReflectionTools)->getParameterTypes(new \ReflectionParameter([
             ReflectionTarget::class, 'privateFunc',
         ], 'str'));
 
-        $this->assertCount(1, $parameters);
-        $this->assertSame('string', $parameters[0]);
+        $this->assertSame(['string'], $types);
     }
 
     public function testGetPropertyTypesShouldReturnEmptyArray()
     {
-        $properties = (new ReflectionTools)->getPropertyTypes(new \ReflectionProperty(ReflectionTarget::class, 'foo'));
+        $types = (new ReflectionTools)->getPropertyTypes(new \ReflectionProperty(ReflectionTarget::class, 'foo'));
 
-        $this->assertCount(0, $properties);
+        $this->assertCount(0, $types);
     }
 
     public function testGetPropertyTypesShouldReturnTypeArray()
     {
-        $properties = (new ReflectionTools)->getPropertyTypes(new \ReflectionProperty(ReflectionTarget::class, 'bar'));
+        $types = (new ReflectionTools)->getPropertyTypes(new \ReflectionProperty(ReflectionTarget::class, 'bar'));
 
-        $this->assertCount(1, $properties);
+        $this->assertSame(['string'], $types);
     }
 
     public function testGetPropertyClassShouldReturnNull()

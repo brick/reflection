@@ -65,14 +65,14 @@ class ImportResolverTest extends TestCase
     {
         $resolver = new ImportResolver(new \ReflectionProperty(ReflectionTarget::class, 'foo'));
 
-        $this->assertResolve(ReflectionTarget::class, 'ReflectionTarget');
+        $this->assertSame(ReflectionTarget::class, $resolver->resolve('ReflectionTarget'));
     }
 
     public function testConstructorWithReflectionMethod()
     {
         $resolver = new ImportResolver(new \ReflectionMethod(ReflectionTarget::class, 'publicStaticMethod'));
 
-        $this->assertResolve('Brick\Reflection\Tests\publicStaticMethod', 'publicStaticMethod');
+        $this->assertSame('Brick\Reflection\Tests\publicStaticMethod', $resolver->resolve('publicStaticMethod'));
     }
 
     public function testConstructorWithReflectionParameter()
@@ -81,7 +81,7 @@ class ImportResolverTest extends TestCase
             ReflectionTarget::class, 'privateFunc',
         ], 'str'));
 
-        $this->assertResolve('Brick\Reflection\Tests\privateFunc', 'privateFunc');
+        $this->assertSame('Brick\Reflection\Tests\privateFunc', $resolver->resolve('privateFunc'));
     }
 
     /**
@@ -91,7 +91,5 @@ class ImportResolverTest extends TestCase
     public function testConstructorWithReflectedFunctionShouldThrowInvalidArgumentException()
     {
         $resolver = new ImportResolver(new \ReflectionFunction('Brick\Reflection\Tests\reflectedFunc'));
-
-        $this->assertNull($resolver);
     }
 }
