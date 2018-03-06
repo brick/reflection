@@ -8,7 +8,7 @@ namespace Brick\Reflection\Tests;
 class ReflectionTarget
 {
     /**
-     * @param string $foo
+     * @param string
      */
     private $foo;
 
@@ -18,7 +18,7 @@ class ReflectionTarget
     private $bar;
 
     /**
-     * @var \\Exception $barWithType
+     * @var \Exception $barWithType
      */
     private $barWithType;
 
@@ -29,8 +29,8 @@ class ReflectionTarget
     }
 
     /**
-     * @param  string $str
-     * @return string $str
+     * @param  string
+     * @return string
      */
     private function privateFunc(string $str)
     {
@@ -40,8 +40,5 @@ class ReflectionTarget
     /**
      * @return void
      */
-    public static function publicStaticMethod()
-    {
-        return 'publicStaticMethod';
-    }
+    public static function publicStaticMethod() {}
 }

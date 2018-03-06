@@ -48,7 +48,7 @@ class ReflectionToolsTest extends TestCase
             ReflectionTarget::class, 'privateFunc',
         ], 'str'));
 
-        $this->assertSame(['string'], $types);
+        $this->assertSame([], $types);
     }
 
     public function testGetPropertyTypesShouldReturnEmptyArray()
@@ -76,7 +76,7 @@ class ReflectionToolsTest extends TestCase
     {
         $propertyClass = (new ReflectionTools)->getPropertyClass(new \ReflectionProperty(ReflectionTarget::class, 'barWithType'));
 
-        $this->assertSame('\Exception', $propertyClass);
+        $this->assertSame('Exception', $propertyClass);
     }
 
     public function testGetFunctionNameShouldReturnClassMethodName()

@@ -72,7 +72,7 @@ class ImportResolverTest extends TestCase
     {
         $resolver = new ImportResolver(new \ReflectionMethod(ReflectionTarget::class, 'publicStaticMethod'));
 
-        $this->assertSame('Brick\Reflection\Tests\publicStaticMethod', $resolver->resolve('publicStaticMethod'));
+        $this->assertSame(ReflectionTarget::class, $resolver->resolve('ReflectionTarget'));
     }
 
     public function testConstructorWithReflectionParameter()
@@ -81,14 +81,14 @@ class ImportResolverTest extends TestCase
             ReflectionTarget::class, 'privateFunc',
         ], 'str'));
 
-        $this->assertSame('Brick\Reflection\Tests\privateFunc', $resolver->resolve('privateFunc'));
+        $this->assertSame(ReflectionTarget::class, $resolver->resolve('ReflectionTarget'));
     }
 
     /**
      * @expectedException        \InvalidArgumentException
      * @expectedExceptionMessage Cannot infer the declaring class from the given ReflectionFunction
      */
-    public function testConstructorWithReflectedFunctionShouldThrowInvalidArgumentException()
+    public function testConstructorWithReflectionFunctionThrowsException()
     {
         $resolver = new ImportResolver(new \ReflectionFunction('Brick\Reflection\Tests\reflectedFunc'));
     }
