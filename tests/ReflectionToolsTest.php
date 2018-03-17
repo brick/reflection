@@ -48,7 +48,7 @@ class ReflectionToolsTest extends TestCase
             ReflectionTarget::class, 'privateFunc',
         ], 'str'));
 
-        $this->assertSame([], $types);
+        $this->assertSame(['string'], $types);
     }
 
     public function testGetPropertyTypesShouldReturnEmptyArray()
