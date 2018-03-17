@@ -135,7 +135,13 @@ class ReflectionTools
     public function getFunctionParameterTypes(\ReflectionFunctionAbstract $function) : array
     {
         return $this->cache(__FUNCTION__, $function, function() use ($function) {
-            preg_match_all('/@param\s+(\S+)\s+\$(\S+)/', $function->getDocComment(), $matches, PREG_SET_ORDER);
+            $docComment = $function->getDocComment();
+
+            if ($docComment === false) {
+                return [];
+            }
+
+            preg_match_all('/@param\s+(\S+)\s+\$(\S+)/', $docComment, $matches, PREG_SET_ORDER);
 
             $types = [];
             foreach ($matches as $match) {
@@ -171,7 +177,13 @@ class ReflectionTools
      */
     public function getPropertyTypes(\ReflectionProperty $property) : array
     {
-        if (preg_match('/@var\s+(\S+)/', $property->getDocComment(), $matches) !== 1) {
+        $docComment = $property->getDocComment();
+
+        if ($docComment === false) {
+            return [];
+        }
+
+        if (preg_match('/@var\s+(\S+)/', $docComment, $matches) !== 1) {
             return [];
         }
 
