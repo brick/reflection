@@ -29,8 +29,7 @@ class ReflectionTarget
     }
 
     /**
-     * @param  string
-     * @return string
+     * @param string $str
      */
     private function privateFunc(string $str)
     {
