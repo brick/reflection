@@ -12,14 +12,11 @@ A collection of low-level tools to extend PHP reflection capabilities.
 
 ## Installation
 
-This library is installable via [Composer](https://getcomposer.org/).
-Just define the following requirement in your `composer.json` file:
+This library is installable via [Composer](https://getcomposer.org/):
 
-    {
-        "require": {
-            "brick/reflection": "0.2.*"
-        }
-    }
+```bash
+composer require brick/reflection
+```
 
 ## Requirements
 
