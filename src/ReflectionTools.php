@@ -134,7 +134,7 @@ class ReflectionTools
      */
     public function getFunctionParameterTypes(\ReflectionFunctionAbstract $function) : array
     {
-        return $this->cache(__FUNCTION__, $function, function() use ($function) {
+        return $this->cache(__FUNCTION__, $function, static function() use ($function) {
             $docComment = $function->getDocComment();
 
             if ($docComment === false) {
