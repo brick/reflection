@@ -99,6 +99,19 @@ class ReflectionToolsTest extends TestCase
                 ['C', 'a'],
                 ['C', 'b'],
                 ['C', 'c']
+            ]],
+            ['X', [
+                ['X', 'a'],
+                ['X', 'b'],
+                ['X', 'c'],
+            ]],
+            ['Y', [
+                ['X', 'a'],
+                ['X', 'b'],
+                ['X', 'c'],
+                ['Y', 'd'],
+                ['Y', 'e'],
+                ['Y', 'f'],
             ]]
         ];
     }
@@ -177,6 +190,28 @@ class S
     private static function a() {}
     protected static function b() {}
     public static function c() {}
+}
+
+class X
+{
+    public $a;
+    public $b;
+    public $c;
+
+    public function a() {}
+    public function b() {}
+    public function c() {}
+}
+
+class Y extends X
+{
+    public $d;
+    public $e;
+    public $f;
+
+    public function d() {}
+    public function e() {}
+    public function f() {}
 }
 
 abstract class Export

@@ -23,8 +23,15 @@ class ReflectionTools
     /**
      * Returns reflections of all the non-static methods that make up one object.
      *
-     * This returns the same methods as ReflectionClass::getMethods(),
-     * plus the private methods of all parent classes.
+     * Like ReflectionClass::getMethods(), this method:
+     *
+     * - does not return overridden protected or public class methods, and only return the overriding one;
+     * - returns methods inside a class in the order they are declared.
+     *
+     * Unlike ReflectionClass::getMethods(), this method:
+     *
+     * - returns the private methods of parent classes;
+     * - returns methods in hierarchical order: methods from parent classes are returned first.
      *
      * @param \ReflectionClass $class
      *
@@ -39,23 +46,34 @@ class ReflectionTools
         foreach ($classes as $hClass) {
             foreach ($hClass->getMethods() as $method) {
                 if ($method->isStatic()) {
+                    // exclude static methods
                     continue;
                 }
 
-                if ($hClass === $class || $method->isPrivate()) {
-                    $methods[] = $method;
+                if ($method->getDeclaringClass()->getName() !== $hClass->getName()) {
+                    // exclude inherited methods
+                    continue;
                 }
+
+                $methods[] = $method;
             }
         }
 
-        return $methods;
+        return $this->filterReflectors($methods);
     }
 
     /**
      * Returns reflections of all the non-static properties that make up one object.
      *
-     * This returns the same properties as ReflectionClass::getProperties(),
-     * plus the private properties of all parent classes.
+     * Like ReflectionClass::getProperties(), this method:
+     *
+     * - does not return overridden protected or public class properties, and only return the overriding one;
+     * - returns properties inside a class in the order they are declared.
+     *
+     * Unlike ReflectionClass::getProperties(), this method:
+     *
+     * - returns the private properties of parent classes;
+     * - returns properties in hierarchical order: properties from parent classes are returned first.
      *
      * @param \ReflectionClass $class
      *
@@ -65,21 +83,65 @@ class ReflectionTools
     {
         $classes = $this->getClassHierarchy($class);
 
+        /** @var \ReflectionProperty[] $properties */
         $properties = [];
 
         foreach ($classes as $hClass) {
             foreach ($hClass->getProperties() as $property) {
                 if ($property->isStatic()) {
+                    // exclude static properties
                     continue;
                 }
 
-                if ($hClass === $class || $property->isPrivate()) {
-                    $properties[] = $property;
+                if ($property->getDeclaringClass()->getName() !== $hClass->getName()) {
+                    // exclude inherited properties
+                    continue;
                 }
+
+                $properties[] = $property;
             }
         }
 
-        return $properties;
+        return $this->filterReflectors($properties);
+    }
+
+    /**
+     * Filters a list of ReflectionProperty or ReflectionMethod objects.
+     *
+     * This method removes overridden properties, while keeping original order.
+     *
+     * Note: ReflectionProperty and ReflectionObject do not explicitly share the same interface, but for the current
+     * purpose they share the same set of methods, and as such are duck typed here.
+     *
+     * @param \ReflectionProperty[]|\ReflectionMethod[] $reflectors
+     *
+     * @return \ReflectionProperty[]|\ReflectionMethod[]
+     */
+    private function filterReflectors(array $reflectors) : array
+    {
+        $filteredReflectors = [];
+
+        foreach ($reflectors as $index => $reflector) {
+            if ($reflector->isPrivate()) {
+                $filteredReflectors[] = $reflector;
+                continue;
+            }
+
+            foreach ($reflectors as $index2 => $reflector2) {
+                if ($index2 <= $index) {
+                    continue;
+                }
+
+                if ($reflector->getName() === $reflector2->getName()) {
+                    // overridden
+                    continue 2;
+                }
+            }
+
+            $filteredReflectors[] = $reflector;
+        }
+
+        return $filteredReflectors;
     }
 
     /**
