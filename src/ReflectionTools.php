@@ -44,13 +44,15 @@ class ReflectionTools
         $methods = [];
 
         foreach ($classes as $hClass) {
+            $hClassName = $hClass->getName();
+
             foreach ($hClass->getMethods() as $method) {
                 if ($method->isStatic()) {
                     // exclude static methods
                     continue;
                 }
 
-                if ($method->getDeclaringClass()->getName() !== $hClass->getName()) {
+                if ($method->getDeclaringClass()->getName() !== $hClassName) {
                     // exclude inherited methods
                     continue;
                 }
@@ -87,13 +89,15 @@ class ReflectionTools
         $properties = [];
 
         foreach ($classes as $hClass) {
+            $hClassName = $hClass->getName();
+
             foreach ($hClass->getProperties() as $property) {
                 if ($property->isStatic()) {
                     // exclude static properties
                     continue;
                 }
 
-                if ($property->getDeclaringClass()->getName() !== $hClass->getName()) {
+                if ($property->getDeclaringClass()->getName() !== $hClassName) {
                     // exclude inherited properties
                     continue;
                 }
