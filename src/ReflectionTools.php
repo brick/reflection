@@ -237,12 +237,29 @@ class ReflectionTools
     /**
      * Returns the types documented on a property.
      *
+     * If the property is typed, the value returned by reflection will be used.
+     * Otherwise, the @ var annotation will be parsed.
+     *
      * @param \ReflectionProperty $property
      *
      * @return array
      */
     public function getPropertyTypes(\ReflectionProperty $property) : array
     {
+        if (version_compare(PHP_VERSION, '7.4') >= 0) {
+            $type = $property->getType();
+
+            if ($type !== null) {
+                $types = [$type->getName()];
+
+                if ($type->allowsNull()) {
+                    $types[] = 'null';
+                }
+
+                return $types;
+            }
+        }
+
         $docComment = $property->getDocComment();
 
         if ($docComment === false) {

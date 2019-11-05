@@ -146,6 +146,29 @@ class ReflectionToolsTest extends TestCase
             ['e', 0, 'private function e(?int $a, int $b = NULL) : ?string'],
         ];
     }
+
+    /**
+     * @dataProvider providerPropertyTypes
+     */
+    public function testGetPropertyTypes(string $class, string $property, array $types)
+    {
+        if (version_compare(PHP_VERSION, '7.4') < 0) {
+            $this->markTestSkipped('Typed properties are for PHP 7.4 only.');
+        }
+
+        $tools = new ReflectionTools();
+        $property = new \ReflectionProperty($class, $property);
+        $this->assertSame($types, $tools->getPropertyTypes($property));
+    }
+
+    public function providerPropertyTypes()
+    {
+        return [
+            [TypedProperties::class, 'a', ['int', 'string']],
+            [TypedProperties::class, 'b', ['string']],
+            [TypedProperties::class, 'c', ['PDO', 'null']]
+        ];
+    }
 }
 
 class A
@@ -221,4 +244,17 @@ abstract class Export
     abstract protected function c(int $a = 1, float $b = 0.5, string $c = 'test', $eol = \PHP_EOL, \StdClass ...$objects) : ?string;
     private function d(?int $a, ?int $b) : ?string {}
     private function e(?int $a, ?int $b = null) : ?string {}
+}
+
+if (version_compare(PHP_VERSION, '7.4') >= 0) {
+    class TypedProperties {
+        /**
+         * @var int|string
+         */
+        public $a;
+
+        public string $b;
+
+        public ?\PDO $c;
+    }
 }
