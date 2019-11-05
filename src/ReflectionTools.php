@@ -274,7 +274,7 @@ class ReflectionTools
     }
 
     /**
-     * Returns the fully qualified class name documented for the given property.
+     * Returns the single fully qualified class name documented for the given property.
      *
      * @param \ReflectionProperty $property
      *
@@ -282,6 +282,19 @@ class ReflectionTools
      */
     public function getPropertyClass(\ReflectionProperty $property) : ?string
     {
+        if (version_compare(PHP_VERSION, '7.4') >= 0) {
+            $type = $property->getType();
+
+            if ($type !== null) {
+                if ($type->allowsNull()) {
+                    // Do not accept nullable types
+                    return null;
+                }
+
+                return $type->getName();
+            }
+        }
+
         $types = $this->getPropertyTypes($property);
 
         if (count($types) === 1) {
