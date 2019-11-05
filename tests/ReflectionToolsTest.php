@@ -4,6 +4,7 @@ namespace Brick\Reflection\Tests;
 
 use Brick\Reflection\ReflectionTools;
 
+use Brick\Reflection\Tests\Classes\TypedProperties;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -244,17 +245,4 @@ abstract class Export
     abstract protected function c(int $a = 1, float $b = 0.5, string $c = 'test', $eol = \PHP_EOL, \StdClass ...$objects) : ?string;
     private function d(?int $a, ?int $b) : ?string {}
     private function e(?int $a, ?int $b = null) : ?string {}
-}
-
-if (version_compare(PHP_VERSION, '7.4') >= 0) {
-    class TypedProperties {
-        /**
-         * @var int|string
-         */
-        public $a;
-
-        public string $b;
-
-        public ?\PDO $c;
-    }
 }

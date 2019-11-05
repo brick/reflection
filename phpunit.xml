@@ -3,6 +3,7 @@
     <testsuites>
         <testsuite name="Reflection tests">
             <directory>tests</directory>
+            <exclude>tests/Classes</exclude>
         </testsuite>
     </testsuites>
     <filter>
