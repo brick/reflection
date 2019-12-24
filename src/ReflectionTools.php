@@ -426,7 +426,7 @@ class ReflectionTools
      *
      * @return mixed The callback return value, potentially cached.
      */
-    private function cache(string $method, $object, callable $callback)
+    private function cache(string $method, object $object, callable $callback)
     {
         $hash = spl_object_hash($object);
 

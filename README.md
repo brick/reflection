@@ -20,7 +20,7 @@ composer require brick/reflection
 
 ## Requirements
 
-This library requires PHP 7.1 or later. For PHP 5.6 and PHP 7.0 compatibility, use version `0.1`.
+This library requires PHP 7.2 or later.
 
 # Documentation
 
