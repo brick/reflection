@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brick\Reflection\Tests;
 
 use Brick\Reflection\ReflectionTools;
@@ -12,7 +14,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ReflectionToolsTest extends TestCase
 {
-    public function testGetMethodsDoesNotReturnStaticMethods()
+    public function testGetMethodsDoesNotReturnStaticMethods() : void
     {
         $class = new \ReflectionClass(__NAMESPACE__ . '\\S');
         $methods = (new ReflectionTools)->getClassMethods($class);
@@ -23,7 +25,7 @@ class ReflectionToolsTest extends TestCase
     /**
      * @return void
      */
-    public function testGetPropertiesDoesNotReturnStaticProperties()
+    public function testGetPropertiesDoesNotReturnStaticProperties() : void
     {
         $class = new \ReflectionClass(__NAMESPACE__ . '\\S');
         $properties = (new ReflectionTools)->getClassProperties($class);
@@ -37,7 +39,7 @@ class ReflectionToolsTest extends TestCase
      * @param string $class
      * @param array  $expected
      */
-    public function testGetMethods($class, array $expected)
+    public function testGetMethods(string $class, array $expected) : void
     {
         $class = new \ReflectionClass(__NAMESPACE__ . '\\' . $class);
         $methods = (new ReflectionTools)->getClassMethods($class);
@@ -60,7 +62,7 @@ class ReflectionToolsTest extends TestCase
      * @param string $class
      * @param array  $expected
      */
-    public function testGetProperties($class, array $expected)
+    public function testGetProperties(string $class, array $expected) : void
     {
         $class = new \ReflectionClass(__NAMESPACE__ . '\\' . $class);
         $properties = (new ReflectionTools)->getClassProperties($class);
@@ -80,7 +82,7 @@ class ReflectionToolsTest extends TestCase
     /**
      * @return array
      */
-    public function hierarchyTestProvider()
+    public function hierarchyTestProvider() : array
     {
         return [
             ['A', [
@@ -120,11 +122,11 @@ class ReflectionToolsTest extends TestCase
     /**
      * @dataProvider providerExportFunction
      *
-     * @param string  $method
-     * @param integer $excludeModifiers
-     * @param string  $expected
+     * @param string $method
+     * @param int    $excludeModifiers
+     * @param string $expected
      */
-    public function testExportFunction($method, $excludeModifiers, $expected)
+    public function testExportFunction(string $method, int $excludeModifiers, string $expected) : void
     {
         $tools = new ReflectionTools();
         $function = new \ReflectionMethod(__NAMESPACE__ . '\Export', $method);
@@ -134,7 +136,7 @@ class ReflectionToolsTest extends TestCase
     /**
      * @return array
      */
-    public function providerExportFunction()
+    public function providerExportFunction() : array
     {
         return [
             ['a', 0, 'final public function a(?\Brick\Reflection\Tests\A $a, \stdClass $b)'],
@@ -151,7 +153,7 @@ class ReflectionToolsTest extends TestCase
     /**
      * @dataProvider providerPropertyTypes
      */
-    public function testGetPropertyTypes(string $class, string $property, array $types)
+    public function testGetPropertyTypes(string $class, string $property, array $types) : void
     {
         if (version_compare(PHP_VERSION, '7.4') < 0) {
             $this->markTestSkipped('Typed properties are for PHP 7.4 only.');
@@ -162,7 +164,7 @@ class ReflectionToolsTest extends TestCase
         $this->assertSame($types, $tools->getPropertyTypes($property));
     }
 
-    public function providerPropertyTypes()
+    public function providerPropertyTypes() : array
     {
         return [
             [TypedProperties::class, 'a', ['int', 'string']],
