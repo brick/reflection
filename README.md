@@ -5,7 +5,7 @@
 A collection of low-level tools to extend PHP reflection capabilities.
 
 [![Build Status](https://secure.travis-ci.org/brick/reflection.svg?branch=master)](http://travis-ci.org/brick/reflection)
-[![Coverage Status](https://coveralls.io/repos/brick/reflection/badge.svg?branch=master)](https://coveralls.io/r/brick/reflection?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/brick/reflection/badge.svg?branch=master)](https://coveralls.io/github/brick/reflection?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/brick/reflection/v/stable)](https://packagist.org/packages/brick/reflection)
 [![Total Downloads](https://poser.pugx.org/brick/reflection/downloads)](https://packagist.org/packages/brick/reflection)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
