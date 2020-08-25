@@ -19,7 +19,7 @@ class ReflectionToolsTest extends TestCase
         $class = new \ReflectionClass(__NAMESPACE__ . '\\S');
         $methods = (new ReflectionTools)->getClassMethods($class);
 
-        $this->assertCount(0, $methods);
+        self::assertCount(0, $methods);
     }
 
     /**
@@ -30,7 +30,7 @@ class ReflectionToolsTest extends TestCase
         $class = new \ReflectionClass(__NAMESPACE__ . '\\S');
         $properties = (new ReflectionTools)->getClassProperties($class);
 
-        $this->assertCount(0, $properties);
+        self::assertCount(0, $properties);
     }
 
     /**
@@ -53,7 +53,7 @@ class ReflectionToolsTest extends TestCase
             ];
         }
 
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 
     /**
@@ -76,7 +76,7 @@ class ReflectionToolsTest extends TestCase
             ];
         }
 
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 
     /**
@@ -130,7 +130,7 @@ class ReflectionToolsTest extends TestCase
     {
         $tools = new ReflectionTools();
         $function = new \ReflectionMethod(__NAMESPACE__ . '\Export', $method);
-        $this->assertSame($expected, $tools->exportFunction($function, $excludeModifiers));
+        self::assertSame($expected, $tools->exportFunction($function, $excludeModifiers));
     }
 
     /**
@@ -156,12 +156,12 @@ class ReflectionToolsTest extends TestCase
     public function testGetPropertyTypes(string $class, string $property, array $types) : void
     {
         if (version_compare(PHP_VERSION, '7.4') < 0) {
-            $this->markTestSkipped('Typed properties are for PHP 7.4 only.');
+            self::markTestSkipped('Typed properties are for PHP 7.4 only.');
         }
 
         $tools = new ReflectionTools();
         $property = new \ReflectionProperty($class, $property);
-        $this->assertSame($types, $tools->getPropertyTypes($property));
+        self::assertSame($types, $tools->getPropertyTypes($property));
     }
 
     public function providerPropertyTypes() : array

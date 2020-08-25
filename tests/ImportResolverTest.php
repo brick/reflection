@@ -20,37 +20,37 @@ class ImportResolverTest extends TestCase
      *
      * @return void
      */
-    private function assertResolve(string $expectedFqcn, string $type) : void
+    private static function assertResolve(string $expectedFqcn, string $type) : void
     {
-        $resolver = new ImportResolver(new \ReflectionObject($this));
-        $this->assertSame($expectedFqcn, $resolver->resolve($type));
+        $resolver = new ImportResolver(new \ReflectionClass(self::class));
+        self::assertSame($expectedFqcn, $resolver->resolve($type));
     }
 
     public function testFullyQualifiedClassName() : void
     {
-        $this->assertResolve(ImportResolver::class, '\\' . ImportResolver::class);
-        $this->assertResolve(Tools::class, '\\' . Tools::class);
-        $this->assertResolve(self::class, '\\' . self::class);
+        self::assertResolve(ImportResolver::class, '\\' . ImportResolver::class);
+        self::assertResolve(Tools::class, '\\' . Tools::class);
+        self::assertResolve(self::class, '\\' . self::class);
     }
 
     public function testClassInSameNamespace() : void
     {
-        $this->assertResolve(__NAMESPACE__ . '\A', 'A');
-        $this->assertResolve(__NAMESPACE__ . '\A\B', 'A\B');
-        $this->assertResolve(__CLASS__, 'ImportResolverTest');
+        self::assertResolve(__NAMESPACE__ . '\A', 'A');
+        self::assertResolve(__NAMESPACE__ . '\A\B', 'A\B');
+        self::assertResolve(__CLASS__, 'ImportResolverTest');
     }
 
     public function testImport() : void
     {
-        $this->assertResolve(ImportResolver::class, 'ImportResolver');
-        $this->assertResolve(ImportResolver::class . '\A', 'ImportResolver\A');
-        $this->assertResolve(ImportResolver::class . '\A\B', 'ImportResolver\A\B');
+        self::assertResolve(ImportResolver::class, 'ImportResolver');
+        self::assertResolve(ImportResolver::class . '\A', 'ImportResolver\A');
+        self::assertResolve(ImportResolver::class . '\A\B', 'ImportResolver\A\B');
     }
 
     public function testAliasedImport() : void
     {
-        $this->assertResolve(Tools::class, 'Tools');
-        $this->assertResolve(Tools::class . '\A', 'Tools\A');
-        $this->assertResolve(Tools::class . '\A\B', 'Tools\A\B');
+        self::assertResolve(Tools::class, 'Tools');
+        self::assertResolve(Tools::class . '\A', 'Tools\A');
+        self::assertResolve(Tools::class . '\A\B', 'Tools\A\B');
     }
 }
