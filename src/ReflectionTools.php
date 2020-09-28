@@ -249,24 +249,71 @@ class ReflectionTools
     /**
      * Returns the types documented on a parameter.
      *
+     * If the parameter is typed, the values returned by reflection will be used.
+     * Otherwise, this method will look for a phpdoc `@param` annotation in the doc comment of the declaring function.
+     *
+     * Class names are returned using their FQCN (including namespace).
+     *
      * @param \ReflectionParameter $parameter
      *
      * @return array
      */
     public function getParameterTypes(\ReflectionParameter $parameter) : array
     {
+        $type = $parameter->getType();
+
+        if ($type instanceof \ReflectionNamedType) { // PHP 7.4+
+            $types = [$type->getName()];
+
+            if ($type->allowsNull()) {
+                $types[] = 'null';
+            }
+
+            return $types;
+        }
+
+        if ($type instanceof \ReflectionUnionType) { // PHP 8.0+
+            return array_map(function (\ReflectionNamedType $type) {
+                return $type->getName();
+            }, $type->getTypes());
+        }
+
         $name = $parameter->getName();
         $function = $parameter->getDeclaringFunction();
         $types = $this->getFunctionParameterTypes($function);
 
-        return isset($types[$name]) ? $types[$name] : [];
+        if (! isset($types[$name])) {
+            return [];
+        }
+
+        $types = $types[$name];
+
+        // instantiate the ImportResolver just-in-time, if required
+        $importResolver = null;
+
+        foreach ($types as $key => $type) {
+            $typeLower = strtolower($type);
+
+            if ($this->isBuiltInType($typeLower)) {
+                $types[$key] = $typeLower;
+                continue;
+            }
+
+            if ($importResolver === null) {
+                $importResolver = new ImportResolver($function);
+            }
+
+            $types[$key] = $importResolver->resolve($type);
+        }
+
+        return $types;
     }
 
     /**
      * Returns the types documented on a property.
      *
      * If the property is typed (PHP 7.4+), the values returned by reflection will be used.
-     * Otherwise, the phpdoc @ var annotation in the doc comments will be parsed.
+     * Otherwise, this method will look for a phpdoc `@var` annotation in the doc comment.
      *
      * Class names are returned using their FQCN (including namespace).
      *
