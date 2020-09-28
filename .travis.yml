@@ -5,6 +5,7 @@ php:
   - 7.2
   - 7.3
   - 7.4
+  - nightly
 
 matrix:
   include:
@@ -12,6 +13,11 @@ matrix:
       env: dependencies=lowest
 
 before_script:
+  - |
+    if [ $TRAVIS_PHP_VERSION == "nightly" ]; then
+      # not all dependencies advertise PHP 8 support yet
+      composer config platform.php 7.4.0
+    fi
   - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest; else composer update; fi;
 
 script:
@@ -19,4 +25,9 @@ script:
   - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
-  - vendor/bin/php-coveralls -v
+  - |
+    if [ $TRAVIS_PHP_VERSION != "nightly" ]; then
+      # php-coveralls does not support PHP 8 yet:
+      # https://github.com/php-coveralls/php-coveralls/issues/281
+      vendor/bin/php-coveralls -v
+    fi
