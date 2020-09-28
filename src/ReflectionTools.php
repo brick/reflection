@@ -237,8 +237,8 @@ class ReflectionTools
     /**
      * Returns the types documented on a property.
      *
-     * If the property is typed, the value returned by reflection will be used.
-     * Otherwise, the @ var annotation will be parsed.
+     * If the property is typed (PHP 7.4+), the values returned by reflection will be used.
+     * Otherwise, the phpdoc @ var annotation in the doc comments will be parsed.
      *
      * @param \ReflectionProperty $property
      *
