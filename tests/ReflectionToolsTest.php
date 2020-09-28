@@ -167,7 +167,7 @@ class ReflectionToolsTest extends TestCase
     public function providerPropertyTypes() : array
     {
         return [
-            [TypedProperties::class, 'a', ['int', 'string']],
+            [TypedProperties::class, 'a', ['int', 'string', 'Namespaced\Foo']],
             [TypedProperties::class, 'b', ['string']],
             [TypedProperties::class, 'c', ['PDO', 'null']]
         ];

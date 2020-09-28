@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Brick\Reflection\Tests\Classes;
 
+use Namespaced\Foo;
+
 class TypedProperties {
     /**
-     * @var int|string
+     * @var INT|string|Foo
      */
     public $a;
 
