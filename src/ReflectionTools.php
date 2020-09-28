@@ -228,7 +228,13 @@ class ReflectionTools
      */
     private function getFunctionParameterTypes(\ReflectionFunctionAbstract $function) : array
     {
-        return $this->cache(__FUNCTION__, $function, static function() use ($function) {
+        if ($function->isClosure()) {
+            $cacheKey = null;
+        } else {
+            $cacheKey = $this->getFunctionName($function);
+        }
+
+        return $this->cache(__FUNCTION__, $cacheKey, static function() use ($function) {
             $docComment = $function->getDocComment();
 
             if ($docComment === false) {
@@ -238,6 +244,7 @@ class ReflectionTools
             preg_match_all('/@param\s+(\S+)\s+\$(\S+)/', $docComment, $matches, PREG_SET_ORDER);
 
             $types = [];
+
             foreach ($matches as $match) {
                 $types[$match[2]] = explode('|', $match[1]);
             }
@@ -526,23 +533,25 @@ class ReflectionTools
     }
 
     /**
-     * Caches the output of a worker function.
+     * Caches the output of a function.
      *
-     * @param string   $method   The name of the calling method.
-     * @param object   $object   The object to use as the cache key.
-     * @param callable $callback The callback that does the actual work.
+     * @param string      $method   The name of the calling method.
+     * @param string|null $key      A method-specific cache key, or null if the output cannot be cached.
+     * @param \Closure    $callback The callback function that does the actual work.
      *
      * @return mixed The callback return value, potentially cached.
      */
-    private function cache(string $method, object $object, callable $callback)
+    private function cache(string $method, ?string $key, \Closure $callback)
     {
-        $hash = spl_object_hash($object);
-
-        if (! isset($this->cache[$method][$hash])) {
-            $this->cache[$method][$hash] = $callback();
+        if ($key === null) {
+            return $callback();
         }
 
-        return $this->cache[$method][$hash];
+        if (isset($this->cache[$method][$key])) {
+            return $this->cache[$method][$key];
+        }
+
+        return $this->cache[$method][$key] = $callback();
     }
 
     /**
