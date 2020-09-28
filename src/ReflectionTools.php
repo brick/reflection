@@ -526,6 +526,6 @@ class ReflectionTools
             $result[] = $importResolver->resolve($type);
         }
 
-        return $result;
+        return array_values(array_unique($result));
     }
 }
