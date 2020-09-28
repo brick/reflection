@@ -153,7 +153,7 @@ class ReflectionToolsTest extends TestCase
     }
 
     /**
-     * @dataProvider providerPropertyTypes
+     * @dataProvider providerGetPropertyTypes
      */
     public function testGetPropertyTypes(string $class, string $property, array $types) : void
     {
@@ -162,7 +162,7 @@ class ReflectionToolsTest extends TestCase
         self::assertSame($types, $tools->getPropertyTypes($property));
     }
 
-    public function providerPropertyTypes() : array
+    public function providerGetPropertyTypes() : array
     {
         $tests = [
             [PropertyTypesPHP72::class, 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
