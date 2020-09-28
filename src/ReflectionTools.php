@@ -256,12 +256,75 @@ class ReflectionTools
      *
      * @param \ReflectionParameter $parameter
      *
-     * @return array
+     * @return string[]
      */
     public function getParameterTypes(\ReflectionParameter $parameter) : array
     {
-        $type = $parameter->getType();
+        $types = $this->getReflectionTypes($parameter->getType());
 
+        if ($types !== null) {
+            return $types;
+        }
+
+        $name = $parameter->getName();
+        $function = $parameter->getDeclaringFunction();
+        $types = $this->getFunctionParameterTypes($function);
+
+        if (! isset($types[$name])) {
+            return [];
+        }
+
+        $types = $types[$name];
+
+        return $this->resolvePhpDocTypes($types, $function);
+    }
+
+    /**
+     * Returns the types documented on a property.
+     *
+     * If the property is typed (PHP 7.4+), the values returned by reflection will be used.
+     * Otherwise, this method will look for a phpdoc `@var` annotation in the doc comment.
+     *
+     * Class names are returned using their FQCN (including namespace).
+     *
+     * @param \ReflectionProperty $property
+     *
+     * @return string[]
+     */
+    public function getPropertyTypes(\ReflectionProperty $property) : array
+    {
+        if (version_compare(PHP_VERSION, '7.4') >= 0) {
+            $types = $this->getReflectionTypes($property->getType());
+
+            if ($types !== null) {
+                return $types;
+            }
+        }
+
+        $docComment = $property->getDocComment();
+
+        if ($docComment === false) {
+            return [];
+        }
+
+        if (preg_match('/@var\s+(\S+)/', $docComment, $matches) !== 1) {
+            return [];
+        }
+
+        $types = explode('|', $matches[1]);
+
+        return $this->resolvePhpDocTypes($types, $property);
+    }
+
+    /**
+     * Returns the types as returned by reflection, or null if no type is documented.
+     *
+     * @param \ReflectionType|null $type
+     *
+     * @return string[]|null
+     */
+    private function getReflectionTypes(?\ReflectionType $type) : ?array
+    {
         if ($type instanceof \ReflectionNamedType) { // PHP 7.4+
             $types = [$type->getName()];
 
@@ -278,102 +341,44 @@ class ReflectionTools
             }, $type->getTypes());
         }
 
-        $name = $parameter->getName();
-        $function = $parameter->getDeclaringFunction();
-        $types = $this->getFunctionParameterTypes($function);
-
-        if (! isset($types[$name])) {
-            return [];
-        }
-
-        $types = $types[$name];
-
-        // instantiate the ImportResolver just-in-time, if required
-        $importResolver = null;
-
-        foreach ($types as $key => $type) {
-            $typeLower = strtolower($type);
-
-            if ($this->isBuiltInType($typeLower)) {
-                $types[$key] = $typeLower;
-                continue;
-            }
-
-            if ($importResolver === null) {
-                $importResolver = new ImportResolver($function);
-            }
-
-            $types[$key] = $importResolver->resolve($type);
-        }
-
-        return $types;
+        return null;
     }
 
     /**
-     * Returns the types documented on a property.
+     * Resolves the given phpdoc types documented with `@var` or `@param`:
      *
-     * If the property is typed (PHP 7.4+), the values returned by reflection will be used.
-     * Otherwise, this method will look for a phpdoc `@var` annotation in the doc comment.
+     * - built-in types are lowercased
+     * - class & interface names are resolved to their FQCN
+     * - the resulting array is deduplicated
      *
-     * Class names are returned using their FQCN (including namespace).
-     *
-     * @param \ReflectionProperty $property
+     * @param string[]   $types   The types to resolve.
+     * @param \Reflector $context The context the types are resolved relative to.
      *
      * @return array
      */
-    public function getPropertyTypes(\ReflectionProperty $property) : array
+    private function resolvePhpDocTypes(array $types, \Reflector $context) : array
     {
-        if (version_compare(PHP_VERSION, '7.4') >= 0) {
-            $type = $property->getType();
-
-            if ($type instanceof \ReflectionNamedType) { // PHP 7.4+
-                $types = [$type->getName()];
-
-                if ($type->allowsNull()) {
-                    $types[] = 'null';
-                }
-
-                return $types;
-            }
-
-            if ($type instanceof \ReflectionUnionType) { // PHP 8.0+
-                return array_map(function (\ReflectionNamedType $type) {
-                    return $type->getName();
-                }, $type->getTypes());
-            }
-        }
-
-        $docComment = $property->getDocComment();
-
-        if ($docComment === false) {
-            return [];
-        }
-
-        if (preg_match('/@var\s+(\S+)/', $docComment, $matches) !== 1) {
-            return [];
-        }
-
-        $types = explode('|', $matches[1]);
-
         // instantiate the ImportResolver just-in-time, if required
         $importResolver = null;
 
-        foreach ($types as $key => $type) {
+        $result = [];
+
+        foreach ($types as $type) {
             $typeLower = strtolower($type);
 
             if ($this->isBuiltInType($typeLower)) {
-                $types[$key] = $typeLower;
+                $result[] = $typeLower;
                 continue;
             }
 
             if ($importResolver === null) {
-                $importResolver = new ImportResolver($property);
+                $importResolver = new ImportResolver($context);
             }
 
-            $types[$key] = $importResolver->resolve($type);
+            $result[] = $importResolver->resolve($type);
         }
 
-        return $types;
+        return $result;
     }
 
     /**
