@@ -21,6 +21,34 @@ class ReflectionTools
     private $cache = [];
 
     /**
+     * The list of built-in PHP types.
+     *
+     * Note that 'resource' is not included, as it's not available as a type-hint.
+     * Note that 'mixed' is allowed if the PHP version is 8 or above.
+     *
+     * @var string[]
+     */
+    private $builtInTypes = [
+        'array',
+        'object',
+        'int',
+        'float',
+        'string',
+        'bool',
+        'null',
+    ];
+
+    /**
+     * ReflectionTools constructor.
+     */
+    public function __construct()
+    {
+        if (version_compare(PHP_VERSION, '8.0') >= 0) {
+            $this->builtInTypes[] = 'mixed';
+        }
+    }
+
+    /**
      * Returns reflections of all the non-static methods that make up one object.
      *
      * Like ReflectionClass::getMethods(), this method:
@@ -240,6 +268,8 @@ class ReflectionTools
      * If the property is typed (PHP 7.4+), the values returned by reflection will be used.
      * Otherwise, the phpdoc @ var annotation in the doc comments will be parsed.
      *
+     * Class names are returned using their FQCN (including namespace).
+     *
      * @param \ReflectionProperty $property
      *
      * @return array
@@ -276,7 +306,27 @@ class ReflectionTools
             return [];
         }
 
-        return explode('|', $matches[1]);
+        $types = explode('|', $matches[1]);
+
+        // instantiate the ImportResolver just-in-time, if required
+        $importResolver = null;
+
+        foreach ($types as $key => $type) {
+            $typeLower = strtolower($type);
+
+            if ($this->isBuiltInType($typeLower)) {
+                $types[$key] = $typeLower;
+                continue;
+            }
+
+            if ($importResolver === null) {
+                $importResolver = new ImportResolver($property);
+            }
+
+            $types[$key] = $importResolver->resolve($type);
+        }
+
+        return $types;
     }
 
     /**
@@ -441,5 +491,15 @@ class ReflectionTools
         }
 
         return $this->cache[$method][$hash];
+    }
+
+    /**
+     * @param string $type The *lowercase* type.
+     *
+     * @return bool
+     */
+    private function isBuiltInType(string $type) : bool
+    {
+        return in_array($type, $this->builtInTypes, true);
     }
 }
