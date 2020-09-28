@@ -249,7 +249,7 @@ class ReflectionTools
         if (version_compare(PHP_VERSION, '7.4') >= 0) {
             $type = $property->getType();
 
-            if ($type !== null) {
+            if ($type instanceof \ReflectionNamedType) { // PHP 7.4+
                 $types = [$type->getName()];
 
                 if ($type->allowsNull()) {
@@ -257,6 +257,12 @@ class ReflectionTools
                 }
 
                 return $types;
+            }
+
+            if ($type instanceof \ReflectionUnionType) { // PHP 8.0+
+                return array_map(function (\ReflectionNamedType $type) {
+                    return $type->getName();
+                }, $type->getTypes());
             }
         }
 
