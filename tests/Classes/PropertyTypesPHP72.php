@@ -6,13 +6,10 @@ namespace Brick\Reflection\Tests\Classes;
 
 use Namespaced\Foo;
 
-class TypedProperties {
+class PropertyTypesPHP72
+{
     /**
-     * @var INT|string|Foo
+     * @var INT|string|Foo|Bar
      */
     public $a;
-
-    public string $b;
-
-    public ?\PDO $c;
 }

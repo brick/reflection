@@ -6,7 +6,9 @@ namespace Brick\Reflection\Tests;
 
 use Brick\Reflection\ReflectionTools;
 
-use Brick\Reflection\Tests\Classes\TypedProperties;
+use Brick\Reflection\Tests\Classes\PropertyTypesPHP72;
+use Brick\Reflection\Tests\Classes\PropertyTypesPHP74;
+use Brick\Reflection\Tests\Classes\PropertyTypesPHP80;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -155,10 +157,6 @@ class ReflectionToolsTest extends TestCase
      */
     public function testGetPropertyTypes(string $class, string $property, array $types) : void
     {
-        if (version_compare(PHP_VERSION, '7.4') < 0) {
-            self::markTestSkipped('Typed properties are for PHP 7.4 only.');
-        }
-
         $tools = new ReflectionTools();
         $property = new \ReflectionProperty($class, $property);
         self::assertSame($types, $tools->getPropertyTypes($property));
@@ -166,11 +164,28 @@ class ReflectionToolsTest extends TestCase
 
     public function providerPropertyTypes() : array
     {
-        return [
-            [TypedProperties::class, 'a', ['int', 'string', 'Namespaced\Foo']],
-            [TypedProperties::class, 'b', ['string']],
-            [TypedProperties::class, 'c', ['PDO', 'null']]
+        $tests = [
+            [PropertyTypesPHP72::class, 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
         ];
+
+        if (version_compare(PHP_VERSION, '7.4') >= 0) {
+            $tests = array_merge($tests, [
+                [PropertyTypesPHP74::class, 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
+                [PropertyTypesPHP74::class, 'b', ['string']],
+                [PropertyTypesPHP74::class, 'c', ['PDO', 'null']],
+            ]);
+        }
+
+        if (version_compare(PHP_VERSION, '8.0') >= 0) {
+            $tests = array_merge($tests, [
+                [PropertyTypesPHP80::class, 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
+                [PropertyTypesPHP80::class, 'b', ['string']],
+                [PropertyTypesPHP80::class, 'c', ['PDO', 'null']],
+                [PropertyTypesPHP80::class, 'd', ['PDO', 'int', 'null']],
+            ]);
+        }
+
+        return $tests;
     }
 }
 
