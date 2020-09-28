@@ -6,6 +6,8 @@ namespace Brick\Reflection\Tests;
 
 use Brick\Reflection\ReflectionTools;
 
+use Brick\Reflection\Tests\Classes\ParameterTypesPHP72;
+use Brick\Reflection\Tests\Classes\ParameterTypesPHP80;
 use Brick\Reflection\Tests\Classes\PropertyTypesPHP72;
 use Brick\Reflection\Tests\Classes\PropertyTypesPHP74;
 use Brick\Reflection\Tests\Classes\PropertyTypesPHP80;
@@ -153,13 +155,54 @@ class ReflectionToolsTest extends TestCase
     }
 
     /**
+     * @dataProvider providerGetParameterTypes
+     */
+    public function testGetParameterTypes(string $class, string $method, string $parameter, array $types) : void
+    {
+        $tools = new ReflectionTools();
+        $reflectionMethod = new \ReflectionMethod($class, $method);
+
+        foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
+            if ($reflectionParameter->getName() === $parameter) {
+                self::assertSame($types, $tools->getParameterTypes($reflectionParameter));
+                return;
+            }
+        }
+
+        self::fail(sprintf('Parameter $%s not found in %s::%s()', $parameter, $class, $method));
+    }
+
+    public function providerGetParameterTypes() : array
+    {
+        $tests = [
+            [ParameterTypesPHP72::class, 'x', 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
+            [ParameterTypesPHP72::class, 'x', 'b', ['PDO', 'null']],
+            [ParameterTypesPHP72::class, 'x', 'c', ['stdClass']],
+            [ParameterTypesPHP72::class, 'x', 'd', ['stdClass', 'null']],
+        ];
+
+        if (version_compare(PHP_VERSION, '8.0') >= 0) {
+            $tests = array_merge($tests, [
+                [ParameterTypesPHP80::class, 'x', 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
+                [ParameterTypesPHP80::class, 'x', 'b', ['PDO', 'null']],
+                [ParameterTypesPHP80::class, 'x', 'c', ['stdClass']],
+                [ParameterTypesPHP80::class, 'x', 'd', ['stdClass', 'null']],
+                [ParameterTypesPHP80::class, 'y', 'a', ['stdClass', 'null']],
+                [ParameterTypesPHP80::class, 'y', 'b', ['stdClass', 'A\B', 'string', 'int', 'null']],
+            ]);
+        }
+
+        return $tests;
+    }
+
+    /**
      * @dataProvider providerGetPropertyTypes
      */
     public function testGetPropertyTypes(string $class, string $property, array $types) : void
     {
         $tools = new ReflectionTools();
-        $property = new \ReflectionProperty($class, $property);
-        self::assertSame($types, $tools->getPropertyTypes($property));
+        $reflectionProperty = new \ReflectionProperty($class, $property);
+        self::assertSame($types, $tools->getPropertyTypes($reflectionProperty));
     }
 
     public function providerGetPropertyTypes() : array
