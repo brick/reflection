@@ -36,7 +36,6 @@ Just create an instance of `ReflectionTools` and you can use the following metho
 - `getClassProperties()` returns reflections of all the non-static properties that make up one object, including private properties of parent classes.
 - `getClassHierarchy()` returns the hierarchy of classes, starting from the first ancestor and ending with the class itself.
 - `getReflectionFunction()` returns a reflection object for any callable.
-- `getFunctionParameterTypes()` returns an associative array of the `@param` types documented on function parameters.
 - `getParameterTypes()` returns the `@param` types documented on a function parameter.
 - `getPropertyTypes()` returns the `@var` types documented on a property.
 - `getPropertyClass()` returns the fully qualified class name type documented for the given property, if any.

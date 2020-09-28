@@ -226,7 +226,7 @@ class ReflectionTools
      *
      * @return array
      */
-    public function getFunctionParameterTypes(\ReflectionFunctionAbstract $function) : array
+    private function getFunctionParameterTypes(\ReflectionFunctionAbstract $function) : array
     {
         return $this->cache(__FUNCTION__, $function, static function() use ($function) {
             $docComment = $function->getDocComment();
