@@ -389,41 +389,6 @@ class ReflectionTools
     }
 
     /**
-     * Returns the single fully qualified class name documented for the given property.
-     *
-     * @param \ReflectionProperty $property
-     *
-     * @return string|null The class name, or null if not available.
-     */
-    public function getPropertyClass(\ReflectionProperty $property) : ?string
-    {
-        if (version_compare(PHP_VERSION, '7.4') >= 0) {
-            $type = $property->getType();
-
-            if ($type !== null) {
-                if ($type->allowsNull()) {
-                    // Do not accept nullable types
-                    return null;
-                }
-
-                return $type->getName();
-            }
-        }
-
-        $types = $this->getPropertyTypes($property);
-
-        if (count($types) === 1) {
-            $type = $types[0];
-
-            if ($type[0] === '\\') {
-                return substr($type, 1);
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Returns a meaningful name for the given function, including the class name if it is a method.
      *
      * Example for a method: Namespace\Class::method
