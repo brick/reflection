@@ -321,11 +321,11 @@ class ReflectionTools
                 $result .= ', ';
             }
 
-            if ($parameter->allowsNull() && ! $parameter->isDefaultValueAvailable()) {
-                $result .= '?';
-            }
-
             if (null !== $type = $parameter->getType()) {
+                if ($parameter->allowsNull() && ! $parameter->isDefaultValueAvailable()) {
+                    $result .= '?';
+                }
+
                 if (! $type->isBuiltin()) {
                     $result .= '\\';
                 }

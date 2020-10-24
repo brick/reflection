@@ -151,6 +151,8 @@ class ReflectionToolsTest extends TestCase
 
             // there does not seem to be a way to differentiate between `?int $b = NULL` and `int $b = NULL`, and PHP considers them as compatible
             ['e', 0, 'private function e(?int $a, int $b = NULL) : ?string'],
+
+            ['f', 0, 'public function f($x)'],
         ];
     }
 
@@ -305,4 +307,5 @@ abstract class Export
     abstract protected function c(int $a = 1, float $b = 0.5, string $c = 'test', $eol = \PHP_EOL, \StdClass ...$objects) : ?string;
     private function d(?int $a, ?int $b) : ?string {}
     private function e(?int $a, ?int $b = null) : ?string {}
+    public function f($x) {}
 }
