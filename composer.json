@@ -23,6 +23,9 @@
     "autoload-dev": {
         "psr-4": {
             "Brick\\Reflection\\Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "tests/functions.php"
+        ]
     }
 }
