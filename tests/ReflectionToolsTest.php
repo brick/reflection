@@ -211,15 +211,10 @@ class ReflectionToolsTest extends TestCase
     {
         $tests = [
             [PropertyTypesPHP72::class, 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
+            [PropertyTypesPHP74::class, 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
+            [PropertyTypesPHP74::class, 'b', ['string']],
+            [PropertyTypesPHP74::class, 'c', ['PDO', 'null']],
         ];
-
-        if (PHP_VERSION_ID >= 70400) {
-            $tests = array_merge($tests, [
-                [PropertyTypesPHP74::class, 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
-                [PropertyTypesPHP74::class, 'b', ['string']],
-                [PropertyTypesPHP74::class, 'c', ['PDO', 'null']],
-            ]);
-        }
 
         if (PHP_VERSION_ID >= 80000) {
             $tests = array_merge($tests, [

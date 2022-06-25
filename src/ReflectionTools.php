@@ -223,12 +223,10 @@ class ReflectionTools
      */
     public function getPropertyTypes(\ReflectionProperty $property) : array
     {
-        if (PHP_VERSION_ID >= 70400) {
-            $types = $this->getReflectionTypes($property->getType());
+        $types = $this->getReflectionTypes($property->getType());
 
-            if ($types !== null) {
-                return $types;
-            }
+        if ($types !== null) {
+            return $types;
         }
 
         $docComment = $property->getDocComment();

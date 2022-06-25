@@ -1,5 +1,11 @@
 # Changelog
 
+## UNRELEASED (0.5.0)
+
+💥 **Breaking changes**
+
+- Minimum PHP version is now `7.4`
+
 ## [0.4.1](https://github.com/brick/reflection/releases/tag/0.4.1) - 2020-10-24
 
 🐛 **Bug fix**
