@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Brick\Reflection\Tests\Classes;
 
-class PropertyTypesPHP74 extends PropertyTypesPHP72
+class PHP74 extends PHP72
 {
     public string $b;
 

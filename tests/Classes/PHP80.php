@@ -7,8 +7,10 @@ namespace Brick\Reflection\Tests\Classes;
 use stdClass;
 use A\B;
 
-class ParameterTypesPHP80 extends ParameterTypesPHP72
+class PHP80 extends PHP74
 {
+    public \PDO|int|NULL $d;
+
     public function y(?stdClass $a, \stdClass|B|int|string|NULL $b)
     {
     }

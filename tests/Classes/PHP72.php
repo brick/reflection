@@ -7,8 +7,13 @@ namespace Brick\Reflection\Tests\Classes;
 use Namespaced\Foo;
 use stdClass;
 
-class ParameterTypesPHP72
+class PHP72
 {
+    /**
+     * @var INT|string|Foo|Bar
+     */
+    public $a;
+
     /**
      * @param INT|string|Foo|Bar $a
      * @param \PDO|null          $b

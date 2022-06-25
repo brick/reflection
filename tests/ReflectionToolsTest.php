@@ -6,11 +6,9 @@ namespace Brick\Reflection\Tests;
 
 use Brick\Reflection\ReflectionTools;
 
-use Brick\Reflection\Tests\Classes\ParameterTypesPHP72;
-use Brick\Reflection\Tests\Classes\ParameterTypesPHP80;
-use Brick\Reflection\Tests\Classes\PropertyTypesPHP72;
-use Brick\Reflection\Tests\Classes\PropertyTypesPHP74;
-use Brick\Reflection\Tests\Classes\PropertyTypesPHP80;
+use Brick\Reflection\Tests\Classes\PHP72;
+use Brick\Reflection\Tests\Classes\PHP74;
+use Brick\Reflection\Tests\Classes\PHP80;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -177,20 +175,20 @@ class ReflectionToolsTest extends TestCase
     public function providerGetParameterTypes() : array
     {
         $tests = [
-            [ParameterTypesPHP72::class, 'x', 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
-            [ParameterTypesPHP72::class, 'x', 'b', ['PDO', 'null']],
-            [ParameterTypesPHP72::class, 'x', 'c', ['stdClass']],
-            [ParameterTypesPHP72::class, 'x', 'd', ['stdClass', 'null']],
+            [PHP72::class, 'x', 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
+            [PHP72::class, 'x', 'b', ['PDO', 'null']],
+            [PHP72::class, 'x', 'c', ['stdClass']],
+            [PHP72::class, 'x', 'd', ['stdClass', 'null']],
         ];
 
         if (PHP_VERSION_ID >= 80000) {
             $tests = array_merge($tests, [
-                [ParameterTypesPHP80::class, 'x', 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
-                [ParameterTypesPHP80::class, 'x', 'b', ['PDO', 'null']],
-                [ParameterTypesPHP80::class, 'x', 'c', ['stdClass']],
-                [ParameterTypesPHP80::class, 'x', 'd', ['stdClass', 'null']],
-                [ParameterTypesPHP80::class, 'y', 'a', ['stdClass', 'null']],
-                [ParameterTypesPHP80::class, 'y', 'b', ['stdClass', 'A\B', 'string', 'int', 'null']],
+                [PHP80::class, 'x', 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
+                [PHP80::class, 'x', 'b', ['PDO', 'null']],
+                [PHP80::class, 'x', 'c', ['stdClass']],
+                [PHP80::class, 'x', 'd', ['stdClass', 'null']],
+                [PHP80::class, 'y', 'a', ['stdClass', 'null']],
+                [PHP80::class, 'y', 'b', ['stdClass', 'A\B', 'string', 'int', 'null']],
             ]);
         }
 
@@ -210,18 +208,18 @@ class ReflectionToolsTest extends TestCase
     public function providerGetPropertyTypes() : array
     {
         $tests = [
-            [PropertyTypesPHP72::class, 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
-            [PropertyTypesPHP74::class, 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
-            [PropertyTypesPHP74::class, 'b', ['string']],
-            [PropertyTypesPHP74::class, 'c', ['PDO', 'null']],
+            [PHP72::class, 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
+            [PHP74::class, 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
+            [PHP74::class, 'b', ['string']],
+            [PHP74::class, 'c', ['PDO', 'null']],
         ];
 
         if (PHP_VERSION_ID >= 80000) {
             $tests = array_merge($tests, [
-                [PropertyTypesPHP80::class, 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
-                [PropertyTypesPHP80::class, 'b', ['string']],
-                [PropertyTypesPHP80::class, 'c', ['PDO', 'null']],
-                [PropertyTypesPHP80::class, 'd', ['PDO', 'int', 'null']],
+                [PHP80::class, 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
+                [PHP80::class, 'b', ['string']],
+                [PHP80::class, 'c', ['PDO', 'null']],
+                [PHP80::class, 'd', ['PDO', 'int', 'null']],
             ]);
         }
 
