@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.23.0@f1fe6ff483bf325c803df9f510d09a03fd796f88">
+  <file src="src/ReflectionTools.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$function</code>
+    </ArgumentTypeCoercion>
+    <InvalidReturnStatement occurrences="2">
+      <code>$this-&gt;filterReflectors($methods)</code>
+      <code>$this-&gt;filterReflectors($properties)</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="2">
+      <code>\ReflectionMethod[]</code>
+      <code>\ReflectionProperty[]</code>
+    </InvalidReturnType>
+    <MixedArgument occurrences="3">
+      <code>$property-&gt;getType()</code>
+      <code>$type-&gt;getTypes()</code>
+      <code>$types</code>
+    </MixedArgument>
+    <MixedArrayAssignment occurrences="1">
+      <code>$this-&gt;cache[$method][$key]</code>
+    </MixedArrayAssignment>
+    <MixedAssignment occurrences="2">
+      <code>$modifier</code>
+      <code>$types</code>
+    </MixedAssignment>
+    <MixedInferredReturnType occurrences="1">
+      <code>array</code>
+    </MixedInferredReturnType>
+    <MixedOperand occurrences="1">
+      <code>$modifier</code>
+    </MixedOperand>
+    <MixedReturnStatement occurrences="1"/>
+    <MixedReturnTypeCoercion occurrences="4">
+      <code>$this-&gt;resolvePhpDocTypes($types, $function)</code>
+      <code>$this-&gt;resolvePhpDocTypes($types, $property)</code>
+      <code>string[]</code>
+      <code>string[]</code>
+    </MixedReturnTypeCoercion>
+    <PossiblyNullOperand occurrences="1">
+      <code>$parameter-&gt;getDefaultValueConstantName()</code>
+    </PossiblyNullOperand>
+    <UndefinedMethod occurrences="2">
+      <code>getName</code>
+      <code>getName</code>
+    </UndefinedMethod>
+  </file>
+</files>

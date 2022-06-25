@@ -19,7 +19,7 @@ class ImportResolver
     private $namespace;
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     private $aliases;
 
