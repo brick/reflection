@@ -13,15 +13,12 @@ use Doctrine\Common\Annotations\TokenParser;
  */
 class ImportResolver
 {
-    /**
-     * @var string
-     */
-    private $namespace;
+    private string $namespace;
 
     /**
      * @var array<string, string>
      */
-    private $aliases;
+    private array $aliases;
 
     /**
      * Class constructor.

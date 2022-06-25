@@ -15,10 +15,8 @@ class ReflectionTools
 {
     /**
      * A generic cache for the output of methods.
-     *
-     * @var array
      */
-    private $cache = [];
+    private array $cache = [];
 
     /**
      * The list of built-in PHP types.
@@ -28,7 +26,7 @@ class ReflectionTools
      *
      * @var string[]
      */
-    private $builtInTypes = [
+    private array $builtInTypes = [
         'array',
         'object',
         'int',
