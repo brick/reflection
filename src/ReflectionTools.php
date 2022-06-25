@@ -43,7 +43,7 @@ class ReflectionTools
      */
     public function __construct()
     {
-        if (version_compare(PHP_VERSION, '8.0') >= 0) {
+        if (PHP_VERSION_ID >= 80000) {
             $this->builtInTypes[] = 'mixed';
         }
     }
@@ -223,7 +223,7 @@ class ReflectionTools
      */
     public function getPropertyTypes(\ReflectionProperty $property) : array
     {
-        if (version_compare(PHP_VERSION, '7.4') >= 0) {
+        if (PHP_VERSION_ID >= 70400) {
             $types = $this->getReflectionTypes($property->getType());
 
             if ($types !== null) {

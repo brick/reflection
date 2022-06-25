@@ -183,7 +183,7 @@ class ReflectionToolsTest extends TestCase
             [ParameterTypesPHP72::class, 'x', 'd', ['stdClass', 'null']],
         ];
 
-        if (version_compare(PHP_VERSION, '8.0') >= 0) {
+        if (PHP_VERSION_ID >= 80000) {
             $tests = array_merge($tests, [
                 [ParameterTypesPHP80::class, 'x', 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
                 [ParameterTypesPHP80::class, 'x', 'b', ['PDO', 'null']],
@@ -213,7 +213,7 @@ class ReflectionToolsTest extends TestCase
             [PropertyTypesPHP72::class, 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
         ];
 
-        if (version_compare(PHP_VERSION, '7.4') >= 0) {
+        if (PHP_VERSION_ID >= 70400) {
             $tests = array_merge($tests, [
                 [PropertyTypesPHP74::class, 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
                 [PropertyTypesPHP74::class, 'b', ['string']],
@@ -221,7 +221,7 @@ class ReflectionToolsTest extends TestCase
             ]);
         }
 
-        if (version_compare(PHP_VERSION, '8.0') >= 0) {
+        if (PHP_VERSION_ID >= 80000) {
             $tests = array_merge($tests, [
                 [PropertyTypesPHP80::class, 'a', ['int', 'string', 'Namespaced\Foo', 'Brick\Reflection\Tests\Classes\Bar']],
                 [PropertyTypesPHP80::class, 'b', ['string']],
