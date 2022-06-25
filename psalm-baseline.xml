@@ -40,8 +40,10 @@
     <PossiblyNullOperand occurrences="1">
       <code>$parameter-&gt;getDefaultValueConstantName()</code>
     </PossiblyNullOperand>
-    <UndefinedMethod occurrences="2">
-      <code>getName</code>
+    <RedundantCondition occurrences="1">
+      <code>$returnType-&gt;getName() !== 'static'</code>
+    </RedundantCondition>
+    <UndefinedMethod occurrences="1">
       <code>getName</code>
     </UndefinedMethod>
   </file>

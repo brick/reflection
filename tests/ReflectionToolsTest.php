@@ -9,6 +9,7 @@ use Brick\Reflection\ReflectionTools;
 use Brick\Reflection\Tests\Classes\PHP72;
 use Brick\Reflection\Tests\Classes\PHP74;
 use Brick\Reflection\Tests\Classes\PHP80;
+use Generator;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -131,27 +132,32 @@ class ReflectionToolsTest extends TestCase
     public function testExportFunction(string $method, int $excludeModifiers, string $expected) : void
     {
         $tools = new ReflectionTools();
-        $function = new \ReflectionMethod(__NAMESPACE__ . '\Export', $method);
+        $function = new \ReflectionMethod($method);
         self::assertSame($expected, $tools->exportFunction($function, $excludeModifiers));
     }
 
-    /**
-     * @return array
-     */
-    public function providerExportFunction() : array
+    public function providerExportFunction() : Generator
     {
-        return [
-            ['a', 0, 'final public function a(?\Brick\Reflection\Tests\A $a, \stdClass $b)'],
-            ['b', 0, 'public static function b(array & $a, callable $b = NULL) : \PDO'],
-            ['b', \ReflectionMethod::IS_STATIC, 'public function b(array & $a, callable $b = NULL) : \PDO'],
-            ['c', 0, 'abstract protected function c(int $a = 1, float $b = 0.5, string $c = \'test\', $eol = PHP_EOL, \StdClass ...$objects) : ?string'],
-            ['d', 0, 'private function d(?int $a, ?int $b) : ?string'],
+        $tests = [
+            [Export::class . '::a', 0, 'final public function a(?\Brick\Reflection\Tests\A $a, \stdClass $b)'],
+            [Export::class . '::b', 0, 'public static function b(array & $a, callable $b = NULL) : \PDO'],
+            [Export::class . '::b', \ReflectionMethod::IS_STATIC, 'public function b(array & $a, callable $b = NULL) : \PDO'],
+            [Export::class . '::c', 0, 'abstract protected function c(int $a = 1, float $b = 0.5, string $c = \'test\', $eol = PHP_EOL, \StdClass ...$objects) : ?string'],
+            [Export::class . '::d', 0, 'private function d(?int $a, ?int $b) : ?string'],
 
             // there does not seem to be a way to differentiate between `?int $b = NULL` and `int $b = NULL`, and PHP considers them as compatible
-            ['e', 0, 'private function e(?int $a, int $b = NULL) : ?string'],
+            [Export::class . '::e', 0, 'private function e(?int $a, int $b = NULL) : ?string'],
 
-            ['f', 0, 'public function f($x)'],
+            [Export::class . '::f', 0, 'public function f($x)'],
         ];
+
+        foreach ($tests as $test) {
+            yield $test;
+        }
+
+        if (PHP_VERSION_ID >= 80000) {
+            yield [PHP80::class . '::returnStatic', 0, 'public function returnStatic() : static'];
+        }
     }
 
     /**

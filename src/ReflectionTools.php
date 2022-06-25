@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Brick\Reflection;
 
+use Exception;
+use ReflectionNamedType;
+
 /**
  * Tools for the Reflection API.
  *
@@ -293,7 +296,11 @@ class ReflectionTools
                 $result .= '?';
             }
 
-            if (! $returnType->isBuiltin()) {
+            if (! $returnType instanceof ReflectionNamedType) {
+                throw new Exception('Union / intersection types not yet supported');
+            }
+
+            if (! $returnType->isBuiltin() && $returnType->getName() !== 'static') {
                 $result .= '\\';
             }
 

@@ -14,4 +14,8 @@ class PHP80 extends PHP74
     public function y(?stdClass $a, \stdClass|B|int|string|NULL $b)
     {
     }
+
+    public function returnStatic(): static
+    {
+    }
 }
