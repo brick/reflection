@@ -228,6 +228,10 @@ class ReflectionTools
                     $result .= '?';
                 }
 
+                if (! $type instanceof ReflectionNamedType) {
+                    throw new Exception('Union / intersection types not yet supported');
+                }
+
                 if (! $type->isBuiltin()) {
                     $result .= '\\';
                 }
