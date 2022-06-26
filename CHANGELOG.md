@@ -9,6 +9,11 @@
   - `ReflectionTools::getParameterTypes()`
   - `ReflectionTools::getPropertyTypes()`
 
+🐛 **Bug fixes**
+
+- `ReflectionTools::exportFunction()`: constants are now properly exported with a leading `\`
+- `ReflectionTools::exportFunction()`: nullable types are now always output with a leading `?`
+
 ## [0.4.1](https://github.com/brick/reflection/releases/tag/0.4.1) - 2020-10-24
 
 🐛 **Bug fix**

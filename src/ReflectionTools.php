@@ -224,7 +224,7 @@ class ReflectionTools
             }
 
             if (null !== $type = $parameter->getType()) {
-                if ($parameter->allowsNull() && ! $parameter->isDefaultValueAvailable()) {
+                if ($parameter->allowsNull()) {
                     $result .= '?';
                 }
 
@@ -251,7 +251,7 @@ class ReflectionTools
 
             if ($parameter->isDefaultValueAvailable()) {
                 if ($parameter->isDefaultValueConstant()) {
-                    $result .= ' = ' . $parameter->getDefaultValueConstantName();
+                    $result .= ' = ' . '\\' . $parameter->getDefaultValueConstantName();
                 } else {
                     $result .= ' = ' . var_export($parameter->getDefaultValue(), true);
                 }

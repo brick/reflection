@@ -8,6 +8,8 @@ use Brick\Reflection\Tests\A;
 use Brick\Reflection\Tests\Attributes\ExpectFunctionSignature;
 use stdClass;
 
+const TEST = 1;
+
 abstract class PHP80
 {
     #[ExpectFunctionSignature('public function noParamsNoReturn()')]
@@ -49,14 +51,17 @@ abstract class PHP80
     #[ExpectFunctionSignature('public function nullableTypedParam(?string $x)')]
     public function nullableTypedParam(?string $x) {}
 
-    #[ExpectFunctionSignature('public function nullableTypedParamWithDefaultNull(string $x = NULL)')]
+    #[ExpectFunctionSignature('public function nullableTypedParamWithDefaultNull(?string $x = NULL)')]
     public function nullableTypedParamWithDefaultNull(?string $x = null) {}
 
-    #[ExpectFunctionSignature('public function nullableTypedParamWithReferenceDefaultNull(string & $x = NULL)')]
+    #[ExpectFunctionSignature('public function nullableTypedParamWithReferenceDefaultNull(?string & $x = NULL)')]
     public function nullableTypedParamWithReferenceDefaultNull(?string & $x = null) {}
 
-    #[ExpectFunctionSignature('public function nullableTypedParamWithDefaultNullOldSyntax(string $x = NULL)')]
+    #[ExpectFunctionSignature('public function nullableTypedParamWithDefaultNullOldSyntax(?string $x = NULL)')]
     public function nullableTypedParamWithDefaultNullOldSyntax(string $x = null) {}
+
+    #[ExpectFunctionSignature('public function nullableTypedParamWithDefaultValue(?string $x = \'hello\')')]
+    public function nullableTypedParamWithDefaultValue(?string $x = 'hello') {}
 
     #[ExpectFunctionSignature('public function variadics(int $a, string ...$b)')]
     public function variadics(int $a, string ...$b) {}
@@ -66,6 +71,9 @@ abstract class PHP80
 
     #[ExpectFunctionSignature('public function nullableVariadicsWithReference(int $a, ?string & ...$b)')]
     public function nullableVariadicsWithReference(int $a, ?string & ...$b) {}
+
+    #[ExpectFunctionSignature('private function constantParams(string $a = \PHP_EOL, ?int $b = \Brick\Reflection\Tests\Classes\TEST)')]
+    private function constantParams(string $a = \PHP_EOL, ?int $b = TEST) {}
 
     #[ExpectFunctionSignature(
         'private static function kitchenSink(' .
@@ -81,8 +89,9 @@ abstract class PHP80
         'object $j, ' .
         '?object $k, ' .
         'array $l, ' .
-        'array $m = NULL, ' .
-        'array $n = NULL, ' .
+        '?array $m = NULL, ' .
+        '?array $n = NULL, ' .
+        'string $o = \PHP_EOL, ' .
         '?\stdClass & ...$objects' .
         ') : ?object'
     )]
@@ -101,6 +110,7 @@ abstract class PHP80
         array $l,
         array $m = null,
         ?array $n = null,
+        string $o = \PHP_EOL,
         ?stdClass & ...$objects,
     ): ?object {}
 }
