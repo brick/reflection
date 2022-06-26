@@ -9,6 +9,10 @@
   - `ReflectionTools::getParameterTypes()`
   - `ReflectionTools::getPropertyTypes()`
 
+✨ **New features**
+
+- `ReflectionTools::exportFunction()`: Support for `never` return type on PHP 8.1
+
 🐛 **Bug fixes**
 
 - `ReflectionTools::exportFunction()`: constants are now properly exported with a leading `\`

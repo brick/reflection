@@ -10,6 +10,7 @@ use Brick\Reflection\Tests\Attributes\ExpectFunctionSignature;
 use Brick\Reflection\Tests\Classes\PHP72;
 use Brick\Reflection\Tests\Classes\PHP74;
 use Brick\Reflection\Tests\Classes\PHP80;
+use Brick\Reflection\Tests\Classes\PHP81;
 use Generator;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -143,6 +144,10 @@ class ReflectionToolsTest extends TestCase
         $classes = [
             PHP80::class,
         ];
+
+        if (PHP_VERSION_ID >= 80100) {
+            $classes[] = PHP81::class;
+        }
 
         foreach ($classes as $class) {
             $reflectionClass = new ReflectionClass($class);
