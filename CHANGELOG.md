@@ -4,7 +4,7 @@
 
 💥 **Breaking changes**
 
-- Minimum PHP version is now `7.4`
+- Minimum PHP version is now `8.0`
 - The following methods have been **removed**:
   - `ReflectionTools::getParameterTypes()`
   - `ReflectionTools::getPropertyTypes()`

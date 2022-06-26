@@ -155,9 +155,7 @@ class ReflectionToolsTest extends TestCase
             yield $test;
         }
 
-        if (PHP_VERSION_ID >= 80000) {
-            yield [PHP80::class . '::returnStatic', 0, 'public function returnStatic() : static'];
-        }
+        yield [PHP80::class . '::returnStatic', 0, 'public function returnStatic() : static'];
     }
 }
 
