@@ -6,11 +6,14 @@ namespace Brick\Reflection\Tests;
 
 use Brick\Reflection\ReflectionTools;
 
+use Brick\Reflection\Tests\Attributes\ExpectFunctionSignature;
 use Brick\Reflection\Tests\Classes\PHP72;
 use Brick\Reflection\Tests\Classes\PHP74;
 use Brick\Reflection\Tests\Classes\PHP80;
 use Generator;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use ReflectionMethod;
 
 /**
  * Unit tests for class ReflectionTools.
@@ -126,36 +129,33 @@ class ReflectionToolsTest extends TestCase
      * @dataProvider providerExportFunction
      *
      * @param string $method
-     * @param int    $excludeModifiers
+     * @param int    $expectedFunctionSignature
      * @param string $expected
      */
-    public function testExportFunction(string $method, int $excludeModifiers, string $expected) : void
+    public function testExportFunction(ReflectionMethod $method, string $expectedFunctionSignature) : void
     {
         $tools = new ReflectionTools();
-        $function = new \ReflectionMethod($method);
-        self::assertSame($expected, $tools->exportFunction($function, $excludeModifiers));
+        self::assertSame($expectedFunctionSignature, $tools->exportFunction($method));
     }
 
     public function providerExportFunction() : Generator
     {
-        $tests = [
-            [Export::class . '::a', 0, 'final public function a(?\Brick\Reflection\Tests\A $a, \stdClass $b)'],
-            [Export::class . '::b', 0, 'public static function b(array & $a, callable $b = NULL) : \PDO'],
-            [Export::class . '::b', \ReflectionMethod::IS_STATIC, 'public function b(array & $a, callable $b = NULL) : \PDO'],
-            [Export::class . '::c', 0, 'abstract protected function c(int $a = 1, float $b = 0.5, string $c = \'test\', $eol = PHP_EOL, \StdClass ...$objects) : ?string'],
-            [Export::class . '::d', 0, 'private function d(?int $a, ?int $b) : ?string'],
-
-            // there does not seem to be a way to differentiate between `?int $b = NULL` and `int $b = NULL`, and PHP considers them as compatible
-            [Export::class . '::e', 0, 'private function e(?int $a, int $b = NULL) : ?string'],
-
-            [Export::class . '::f', 0, 'public function f($x)'],
+        $classes = [
+            PHP80::class,
         ];
 
-        foreach ($tests as $test) {
-            yield $test;
-        }
+        foreach ($classes as $class) {
+            $reflectionClass = new ReflectionClass($class);
+            foreach ($reflectionClass->getMethods() as $reflectionMethod) {
+                $reflectionAttributes = $reflectionMethod->getAttributes(ExpectFunctionSignature::class);
 
-        yield [PHP80::class . '::returnStatic', 0, 'public function returnStatic() : static'];
+                foreach ($reflectionAttributes as $reflectionAttribute) {
+                    /** @var ExpectFunctionSignature $attribute */
+                    $attribute = $reflectionAttribute->newInstance();
+                    yield [$reflectionMethod, $attribute->functionSignature];
+                }
+            }
+        }
     }
 }
 
@@ -223,14 +223,4 @@ class Y extends X
     public function d() {}
     public function e() {}
     public function f() {}
-}
-
-abstract class Export
-{
-    final public function a(?A $a, \stdClass $b) {}
-    public static function b(array & $a, callable $b = null) : \PDO {}
-    abstract protected function c(int $a = 1, float $b = 0.5, string $c = 'test', $eol = \PHP_EOL, \StdClass ...$objects) : ?string;
-    private function d(?int $a, ?int $b) : ?string {}
-    private function e(?int $a, ?int $b = null) : ?string {}
-    public function f($x) {}
 }
