@@ -5,6 +5,9 @@
 💥 **Breaking changes**
 
 - Minimum PHP version is now `7.4`
+- The following methods have been **removed**:
+  - `ReflectionTools::getParameterTypes()`
+  - `ReflectionTools::getPropertyTypes()`
 
 ## [0.4.1](https://github.com/brick/reflection/releases/tag/0.4.1) - 2020-10-24
 

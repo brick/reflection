@@ -17,39 +17,6 @@ use ReflectionNamedType;
 class ReflectionTools
 {
     /**
-     * A generic cache for the output of methods.
-     */
-    private array $cache = [];
-
-    /**
-     * The list of built-in PHP types.
-     *
-     * Note that 'resource' is not included, as it's not available as a type-hint.
-     * Note that 'mixed' is allowed if the PHP version is 8 or above.
-     *
-     * @var string[]
-     */
-    private array $builtInTypes = [
-        'array',
-        'object',
-        'int',
-        'float',
-        'string',
-        'bool',
-        'null',
-    ];
-
-    /**
-     * ReflectionTools constructor.
-     */
-    public function __construct()
-    {
-        if (PHP_VERSION_ID >= 80000) {
-            $this->builtInTypes[] = 'mixed';
-        }
-    }
-
-    /**
      * Returns reflections of all the non-static methods that make up one object.
      *
      * Like ReflectionClass::getMethods(), this method:
@@ -178,74 +145,6 @@ class ReflectionTools
     }
 
     /**
-     * Returns the types documented on a parameter.
-     *
-     * If the parameter is typed, the values returned by reflection will be used.
-     * Otherwise, this method will look for a phpdoc `@param` annotation in the doc comment of the declaring function.
-     *
-     * Class names are returned using their FQCN (including namespace).
-     *
-     * @param \ReflectionParameter $parameter
-     *
-     * @return string[]
-     */
-    public function getParameterTypes(\ReflectionParameter $parameter) : array
-    {
-        $types = $this->getReflectionTypes($parameter->getType());
-
-        if ($types !== null) {
-            return $types;
-        }
-
-        $name = $parameter->getName();
-        $function = $parameter->getDeclaringFunction();
-        $types = $this->getFunctionParameterTypes($function);
-
-        if (! isset($types[$name])) {
-            return [];
-        }
-
-        $types = $types[$name];
-
-        return $this->resolvePhpDocTypes($types, $function);
-    }
-
-    /**
-     * Returns the types documented on a property.
-     *
-     * If the property is typed (PHP 7.4+), the values returned by reflection will be used.
-     * Otherwise, this method will look for a phpdoc `@var` annotation in the doc comment.
-     *
-     * Class names are returned using their FQCN (including namespace).
-     *
-     * @param \ReflectionProperty $property
-     *
-     * @return string[]
-     */
-    public function getPropertyTypes(\ReflectionProperty $property) : array
-    {
-        $types = $this->getReflectionTypes($property->getType());
-
-        if ($types !== null) {
-            return $types;
-        }
-
-        $docComment = $property->getDocComment();
-
-        if ($docComment === false) {
-            return [];
-        }
-
-        if (preg_match('/@var\s+(\S+)/', $docComment, $matches) !== 1) {
-            return [];
-        }
-
-        $types = explode('|', $matches[1]);
-
-        return $this->resolvePhpDocTypes($types, $property);
-    }
-
-    /**
      * Returns a meaningful name for the given function, including the class name if it is a method.
      *
      * Example for a method: Namespace\Class::method
@@ -359,38 +258,6 @@ class ReflectionTools
     }
 
     /**
-     * Caches the output of a function.
-     *
-     * @param string      $method   The name of the calling method.
-     * @param string|null $key      A method-specific cache key, or null if the output cannot be cached.
-     * @param \Closure    $callback The callback function that does the actual work.
-     *
-     * @return mixed The callback return value, potentially cached.
-     */
-    private function cache(string $method, ?string $key, \Closure $callback)
-    {
-        if ($key === null) {
-            return $callback();
-        }
-
-        if (isset($this->cache[$method][$key])) {
-            return $this->cache[$method][$key];
-        }
-
-        return $this->cache[$method][$key] = $callback();
-    }
-
-    /**
-     * @param string $type The *lowercase* type.
-     *
-     * @return bool
-     */
-    private function isBuiltInType(string $type) : bool
-    {
-        return in_array($type, $this->builtInTypes, true);
-    }
-
-    /**
      * Filters a list of ReflectionProperty or ReflectionMethod objects.
      *
      * This method removes overridden properties, while keeping original order.
@@ -427,108 +294,5 @@ class ReflectionTools
         }
 
         return $filteredReflectors;
-    }
-
-    /**
-     * Returns an associative array of the types documented on a function.
-     *
-     * The keys are the parameter names, and values the documented types as an array.
-     * This method does not check that parameter names actually exist,
-     * so documented types might not match the function parameter names.
-     *
-     * @param \ReflectionFunctionAbstract $function
-     *
-     * @return array
-     */
-    private function getFunctionParameterTypes(\ReflectionFunctionAbstract $function) : array
-    {
-        if ($function->isClosure()) {
-            $cacheKey = null;
-        } else {
-            $cacheKey = $this->getFunctionName($function);
-        }
-
-        return $this->cache(__FUNCTION__, $cacheKey, static function() use ($function) {
-            $docComment = $function->getDocComment();
-
-            if ($docComment === false) {
-                return [];
-            }
-
-            preg_match_all('/@param\s+(\S+)\s+\$(\S+)/', $docComment, $matches, PREG_SET_ORDER);
-
-            $types = [];
-
-            foreach ($matches as $match) {
-                $types[$match[2]] = explode('|', $match[1]);
-            }
-
-            return $types;
-        });
-    }
-
-    /**
-     * Returns the types as returned by reflection, or null if no type is set.
-     *
-     * @param \ReflectionType|null $type
-     *
-     * @return string[]|null
-     */
-    private function getReflectionTypes(?\ReflectionType $type) : ?array
-    {
-        if ($type instanceof \ReflectionNamedType) { // PHP 7.4+
-            $types = [$type->getName()];
-
-            if ($type->allowsNull()) {
-                $types[] = 'null';
-            }
-
-            return $types;
-        }
-
-        if ($type instanceof \ReflectionUnionType) { // PHP 8.0+
-            return array_map(function (\ReflectionNamedType $type) {
-                return $type->getName();
-            }, $type->getTypes());
-        }
-
-        return null;
-    }
-
-    /**
-     * Resolves the given phpdoc types documented with `@var` or `@param`:
-     *
-     * - built-in types are lowercased
-     * - class & interface names are resolved to their FQCN
-     * - the resulting array is deduplicated
-     *
-     * @param string[]   $types   The types to resolve.
-     * @param \Reflector $context The context the types are resolved relative to.
-     *
-     * @return array
-     */
-    private function resolvePhpDocTypes(array $types, \Reflector $context) : array
-    {
-        // instantiate the ImportResolver just-in-time, if required
-        $importResolver = null;
-
-        $result = [];
-
-        foreach ($types as $type) {
-            $typeLower = strtolower($type);
-
-            if ($this->isBuiltInType($typeLower)) {
-                $result[] = $typeLower;
-                continue;
-            }
-
-            if ($importResolver === null) {
-                $importResolver = new ImportResolver($context);
-            }
-
-            $result[] = $importResolver->resolve($type);
-        }
-
-        return array_values(array_unique($result));
     }
 }
