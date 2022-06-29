@@ -30,7 +30,7 @@ abstract class PHP80
     #[ExpectFunctionSignature('public function returnMixed() : mixed')]
     public function returnMixed(): mixed {}
 
-    #[ExpectFunctionSignature('private function selfKitchenSink(self $a, ?self $b, ?self $c = NULL, ?self $d = NULL) : self')]
+    #[ExpectFunctionSignature('private function selfKitchenSink(self $a, ?self $b, ?self $c = null, ?self $d = null) : self')]
     private function selfKitchenSink(self $a, ?self $b, self $c = null, ?self $d = null): self {}
 
     #[ExpectFunctionSignature('private function returnNullableSelf() : ?self')]
@@ -63,13 +63,13 @@ abstract class PHP80
     #[ExpectFunctionSignature('public function nullableTypedParam(?string $x)')]
     public function nullableTypedParam(?string $x) {}
 
-    #[ExpectFunctionSignature('public function nullableTypedParamWithDefaultNull(?string $x = NULL)')]
+    #[ExpectFunctionSignature('public function nullableTypedParamWithDefaultNull(?string $x = null)')]
     public function nullableTypedParamWithDefaultNull(?string $x = null) {}
 
-    #[ExpectFunctionSignature('public function nullableTypedParamWithReferenceDefaultNull(?string & $x = NULL)')]
+    #[ExpectFunctionSignature('public function nullableTypedParamWithReferenceDefaultNull(?string & $x = null)')]
     public function nullableTypedParamWithReferenceDefaultNull(?string & $x = null) {}
 
-    #[ExpectFunctionSignature('public function nullableTypedParamWithDefaultNullOldSyntax(?string $x = NULL)')]
+    #[ExpectFunctionSignature('public function nullableTypedParamWithDefaultNullOldSyntax(?string $x = null)')]
     public function nullableTypedParamWithDefaultNullOldSyntax(string $x = null) {}
 
     #[ExpectFunctionSignature('public function nullableTypedParamWithDefaultValue(?string $x = \'hello\')')]
@@ -102,10 +102,11 @@ abstract class PHP80
         '?object $k, ' .
         'array $l, ' .
         'mixed $m, ' .
-        '?array $n = NULL, ' .
-        '?array $o = NULL, ' .
+        '?array $n = null, ' .
+        '?array $o = null, ' .
         'string $p = \PHP_EOL, ' .
-        'mixed $q = NULL, ' .
+        'mixed $q = null, ' .
+        "array \$r = [1, null, true, 1.2, 'abc', ['nested']], " .
         '?\stdClass & ...$objects' .
         ') : ?static'
     )]
@@ -127,6 +128,14 @@ abstract class PHP80
         ?array $o = null,
         string $p = \PHP_EOL,
         mixed $q = null,
+        array $r = [
+            1,
+            null,
+            true,
+            1.2,
+            'abc',
+            ['nested'],
+        ],
         ?stdClass & ...$objects,
     ): ?static {}
 }

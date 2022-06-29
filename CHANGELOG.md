@@ -11,12 +11,20 @@
 
 ✨ **New features**
 
-- `ReflectionTools::exportFunction()`: Support for `self`, `static` and `never` types
+- `ReflectionTools::exportFunction()`:
+  - Support for `self`, `static` and `never` types
 
 🐛 **Bug fixes**
 
-- `ReflectionTools::exportFunction()`: constants are now properly exported with a leading `\`
-- `ReflectionTools::exportFunction()`: nullable types are now always output with a leading `?`
+- `ReflectionTools::exportFunction()`:
+  - constants are now properly exported with a leading `\`
+  - nullable types are now always output with a leading `?`
+
+💄 **Cosmetic changes**
+
+- `ReflectionTools::exportFunction()`:
+  - Null values in parameter default values are now output as `null` instead of `NULL`
+  - Arrays in parameter default values are now exported with short array syntax, on a single line
 
 ## [0.4.1](https://github.com/brick/reflection/releases/tag/0.4.1) - 2020-10-24
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Brick\Reflection;
 
+use Brick\VarExporter\VarExporter;
 use Exception;
 use ReflectionNamedType;
 
@@ -253,7 +254,7 @@ class ReflectionTools
                 if ($parameter->isDefaultValueConstant()) {
                     $result .= ' = ' . '\\' . $parameter->getDefaultValueConstantName();
                 } else {
-                    $result .= ' = ' . var_export($parameter->getDefaultValue(), true);
+                    $result .= ' = ' . VarExporter::export($parameter->getDefaultValue(), VarExporter::INLINE_ARRAY);
                 }
             }
         }
