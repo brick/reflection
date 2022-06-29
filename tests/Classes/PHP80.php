@@ -12,20 +12,23 @@ const TEST = 1;
 
 abstract class PHP80
 {
-    #[ExpectFunctionSignature('public function noParamsNoReturn()')]
-    public function noParamsNoReturn() {}
+    #[ExpectFunctionSignature('public function noParamsNoReturnType()')]
+    public function noParamsNoReturnType() {}
 
     #[ExpectFunctionSignature('public function returnType() : int')]
     public function returnType(): int {}
 
-    #[ExpectFunctionSignature('public function nullableReturnType() : ?string')]
-    public function nullableReturnType(): ?string {}
+    #[ExpectFunctionSignature('public function returnNullableType() : ?string')]
+    public function returnNullableType(): ?string {}
 
-    #[ExpectFunctionSignature('public function classReturnType() : \stdClass')]
-    public function classReturnType(): stdClass {}
+    #[ExpectFunctionSignature('public function returnClassType() : \stdClass')]
+    public function returnClassType(): stdClass {}
 
-    #[ExpectFunctionSignature('public function nullableClassReturnType() : ?\Brick\Reflection\Tests\A')]
-    public function nullableClassReturnType(): ?A {}
+    #[ExpectFunctionSignature('public function returnNullableClassType() : ?\Brick\Reflection\Tests\A')]
+    public function returnNullableClassType(): ?A {}
+
+    #[ExpectFunctionSignature('public function returnMixed() : mixed')]
+    public function returnMixed(): mixed {}
 
     #[ExpectFunctionSignature('private function returnStatic() : static')]
     private function returnStatic(): static {}
@@ -89,9 +92,11 @@ abstract class PHP80
         'object $j, ' .
         '?object $k, ' .
         'array $l, ' .
-        '?array $m = NULL, ' .
+        'mixed $m, ' .
         '?array $n = NULL, ' .
-        'string $o = \PHP_EOL, ' .
+        '?array $o = NULL, ' .
+        'string $p = \PHP_EOL, ' .
+        'mixed $q = NULL, ' .
         '?\stdClass & ...$objects' .
         ') : ?object'
     )]
@@ -108,9 +113,11 @@ abstract class PHP80
         object $j,
         ?object $k,
         array $l,
-        array $m = null,
-        ?array $n = null,
-        string $o = \PHP_EOL,
+        mixed $m,
+        array $n = null,
+        ?array $o = null,
+        string $p = \PHP_EOL,
+        mixed $q = null,
         ?stdClass & ...$objects,
     ): ?object {}
 }

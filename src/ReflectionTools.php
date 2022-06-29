@@ -191,12 +191,12 @@ class ReflectionTools
         if (null !== $returnType = $function->getReturnType()) {
             $result .= ' : ';
 
-            if ($returnType->allowsNull()) {
-                $result .= '?';
-            }
-
             if (! $returnType instanceof ReflectionNamedType) {
                 throw new Exception('Union / intersection types not yet supported');
+            }
+
+            if ($returnType->allowsNull() && $returnType->getName() !== 'mixed') {
+                $result .= '?';
             }
 
             if (! $returnType->isBuiltin() && $returnType->getName() !== 'static') {
@@ -224,12 +224,12 @@ class ReflectionTools
             }
 
             if (null !== $type = $parameter->getType()) {
-                if ($parameter->allowsNull()) {
-                    $result .= '?';
-                }
-
                 if (! $type instanceof ReflectionNamedType) {
                     throw new Exception('Union / intersection types not yet supported');
+                }
+
+                if ($parameter->allowsNull() && $type->getName() !== 'mixed') {
+                    $result .= '?';
                 }
 
                 if (! $type->isBuiltin()) {
