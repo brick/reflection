@@ -11,7 +11,7 @@
 
 ✨ **New features**
 
-- `ReflectionTools::exportFunction()`: Support for `never` return type on PHP 8.1
+- `ReflectionTools::exportFunction()`: Support for `self`, `static` and `never` types
 
 🐛 **Bug fixes**
 

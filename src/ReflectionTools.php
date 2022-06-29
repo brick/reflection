@@ -199,7 +199,7 @@ class ReflectionTools
                 $result .= '?';
             }
 
-            if (! $returnType->isBuiltin() && $returnType->getName() !== 'static') {
+            if (! $returnType->isBuiltin() && $returnType->getName() !== 'self' && $returnType->getName() !== 'static') {
                 $result .= '\\';
             }
 
@@ -232,7 +232,7 @@ class ReflectionTools
                     $result .= '?';
                 }
 
-                if (! $type->isBuiltin()) {
+                if (! $type->isBuiltin() && $type->getName() !== 'self') {
                     $result .= '\\';
                 }
 

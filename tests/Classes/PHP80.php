@@ -30,8 +30,17 @@ abstract class PHP80
     #[ExpectFunctionSignature('public function returnMixed() : mixed')]
     public function returnMixed(): mixed {}
 
+    #[ExpectFunctionSignature('private function selfKitchenSink(self $a, ?self $b, ?self $c = NULL, ?self $d = NULL) : self')]
+    private function selfKitchenSink(self $a, ?self $b, self $c = null, ?self $d = null): self {}
+
+    #[ExpectFunctionSignature('private function returnNullableSelf() : ?self')]
+    private function returnNullableSelf(): ?self {}
+
     #[ExpectFunctionSignature('private function returnStatic() : static')]
     private function returnStatic(): static {}
+
+    #[ExpectFunctionSignature('private function returnNullableStatic() : ?static')]
+    private function returnNullableStatic(): ?static {}
 
     #[ExpectFunctionSignature('public function untypedParam($x)')]
     public function untypedParam($x) {}
@@ -98,7 +107,7 @@ abstract class PHP80
         'string $p = \PHP_EOL, ' .
         'mixed $q = NULL, ' .
         '?\stdClass & ...$objects' .
-        ') : ?object'
+        ') : ?static'
     )]
     private static function kitchenSink(
         $a,
@@ -119,5 +128,5 @@ abstract class PHP80
         string $p = \PHP_EOL,
         mixed $q = null,
         ?stdClass & ...$objects,
-    ): ?object {}
+    ): ?static {}
 }
