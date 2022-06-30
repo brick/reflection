@@ -25,7 +25,7 @@
 - `ReflectionTools::exportFunction()`:
   - Null values in parameter default values are now output as `null` instead of `NULL`
   - Arrays in parameter default values are now exported with short array syntax, on a single line
-
+  - There is no more space between closing parenthesis and colon, i.e. `): int` instead of `) : int`
 ## [0.4.1](https://github.com/brick/reflection/releases/tag/0.4.1) - 2020-10-24
 
 🐛 **Bug fix**

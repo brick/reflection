@@ -190,7 +190,7 @@ class ReflectionTools
         $result .= '(' . $this->exportFunctionParameters($function) . ')';
 
         if (null !== $returnType = $function->getReturnType()) {
-            $result .= ' : ';
+            $result .= ': ';
 
             if (! $returnType instanceof ReflectionNamedType) {
                 throw new Exception('Union / intersection types not yet supported');

@@ -15,31 +15,31 @@ abstract class PHP80
     #[ExpectFunctionSignature('public function noParamsNoReturnType()')]
     public function noParamsNoReturnType() {}
 
-    #[ExpectFunctionSignature('public function returnType() : int')]
+    #[ExpectFunctionSignature('public function returnType(): int')]
     public function returnType(): int {}
 
-    #[ExpectFunctionSignature('public function returnNullableType() : ?string')]
+    #[ExpectFunctionSignature('public function returnNullableType(): ?string')]
     public function returnNullableType(): ?string {}
 
-    #[ExpectFunctionSignature('public function returnClassType() : \stdClass')]
+    #[ExpectFunctionSignature('public function returnClassType(): \stdClass')]
     public function returnClassType(): stdClass {}
 
-    #[ExpectFunctionSignature('public function returnNullableClassType() : ?\Brick\Reflection\Tests\A')]
+    #[ExpectFunctionSignature('public function returnNullableClassType(): ?\Brick\Reflection\Tests\A')]
     public function returnNullableClassType(): ?A {}
 
-    #[ExpectFunctionSignature('public function returnMixed() : mixed')]
+    #[ExpectFunctionSignature('public function returnMixed(): mixed')]
     public function returnMixed(): mixed {}
 
-    #[ExpectFunctionSignature('private function selfKitchenSink(self $a, ?self $b, ?self $c = null, ?self $d = null) : self')]
+    #[ExpectFunctionSignature('private function selfKitchenSink(self $a, ?self $b, ?self $c = null, ?self $d = null): self')]
     private function selfKitchenSink(self $a, ?self $b, self $c = null, ?self $d = null): self {}
 
-    #[ExpectFunctionSignature('private function returnNullableSelf() : ?self')]
+    #[ExpectFunctionSignature('private function returnNullableSelf(): ?self')]
     private function returnNullableSelf(): ?self {}
 
-    #[ExpectFunctionSignature('private function returnStatic() : static')]
+    #[ExpectFunctionSignature('private function returnStatic(): static')]
     private function returnStatic(): static {}
 
-    #[ExpectFunctionSignature('private function returnNullableStatic() : ?static')]
+    #[ExpectFunctionSignature('private function returnNullableStatic(): ?static')]
     private function returnNullableStatic(): ?static {}
 
     #[ExpectFunctionSignature('public function untypedParam($x)')]
@@ -108,7 +108,7 @@ abstract class PHP80
         'mixed $q = null, ' .
         "array \$r = [1, null, true, 1.2, 'abc', ['nested']], " .
         '?\stdClass & ...$objects' .
-        ') : ?static'
+        '): ?static'
     )]
     private static function kitchenSink(
         $a,

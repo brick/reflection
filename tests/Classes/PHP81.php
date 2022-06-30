@@ -8,6 +8,6 @@ use Brick\Reflection\Tests\Attributes\ExpectFunctionSignature;
 
 abstract class PHP81
 {
-    #[ExpectFunctionSignature('final protected function returnNever() : never')]
+    #[ExpectFunctionSignature('final protected function returnNever(): never')]
     final protected function returnNever(): never {}
 }
