@@ -88,7 +88,7 @@ abstract class PHP80
     private function constantParams(string $a = \PHP_EOL, ?int $b = TEST) {}
 
     #[ExpectFunctionSignature(
-        'private static function kitchenSink(' .
+        'abstract protected static function kitchenSink(' .
         '$a, ' .
         '& $b, ' .
         'int $c, ' .
@@ -110,7 +110,7 @@ abstract class PHP80
         '?\stdClass & ...$objects' .
         '): ?static'
     )]
-    private static function kitchenSink(
+    abstract protected static function kitchenSink(
         $a,
         & $b,
         int $c,
@@ -137,5 +137,5 @@ abstract class PHP80
             ['nested'],
         ],
         ?stdClass & ...$objects,
-    ): ?static {}
+    ): ?static;
 }
