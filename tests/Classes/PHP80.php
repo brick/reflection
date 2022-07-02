@@ -90,8 +90,11 @@ abstract class PHP80
     #[ExpectFunctionSignature('public function unionTypes(\stdClass|string|null $a, ?string $b): \stdClass|string|int|null')]
     public function unionTypes(stdClass|string|null $a, string|null $b): stdClass|int|string|null {}
 
+    #[ExpectFunctionSignature('public function & returnWithReference(): void')]
+    public function & returnWithReference(): void {}
+
     #[ExpectFunctionSignature(
-        'abstract protected static function kitchenSink(' .
+        'abstract protected static function & kitchenSink(' .
         '$a, ' .
         '& $b, ' .
         'int $c, ' .
@@ -114,7 +117,7 @@ abstract class PHP80
         '?\stdClass & ...$objects' .
         '): ?static'
     )]
-    abstract protected static function kitchenSink(
+    abstract protected static function & kitchenSink(
         $a,
         & $b,
         int $c,

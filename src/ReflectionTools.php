@@ -189,7 +189,13 @@ class ReflectionTools
             }
         }
 
-        $result .= 'function ' . $function->getShortName();
+        $result .= 'function ';
+
+        if ($function->returnsReference()) {
+            $result .= '& ';
+        }
+
+        $result .= $function->getShortName();
         $result .= '(' . $this->exportFunctionParameters($function) . ')';
 
         if (null !== $returnType = $function->getReturnType()) {
