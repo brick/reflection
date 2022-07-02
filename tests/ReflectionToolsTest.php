@@ -128,15 +128,11 @@ class ReflectionToolsTest extends TestCase
 
     /**
      * @dataProvider providerExportFunction
-     *
-     * @param string $method
-     * @param int    $expectedFunctionSignature
-     * @param string $expected
      */
-    public function testExportFunction(ReflectionMethod $method, string $expectedFunctionSignature) : void
+    public function testExportFunctionSignature(ReflectionMethod $method, string $expectedFunctionSignature) : void
     {
         $tools = new ReflectionTools();
-        self::assertSame($expectedFunctionSignature, $tools->exportFunction($method));
+        self::assertSame($expectedFunctionSignature, $tools->exportFunctionSignature($method));
     }
 
     public function providerExportFunction() : Generator

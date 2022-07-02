@@ -176,7 +176,7 @@ class ReflectionTools
      *
      * @return string
      */
-    public function exportFunction(\ReflectionFunctionAbstract $function, int $excludeModifiers = 0) : string
+    public function exportFunctionSignature(\ReflectionFunctionAbstract $function, int $excludeModifiers = 0) : string
     {
         $result = '';
 

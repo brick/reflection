@@ -8,26 +8,28 @@
 - The following methods have been **removed**:
   - `ReflectionTools::getParameterTypes()`
   - `ReflectionTools::getPropertyTypes()`
+- `ReflectionTools::exportFunction()` has been renamed to `exportFunctionSignature()`
 
 ✨ **New features**
 
-- `ReflectionTools::exportFunction()`:
+- `ReflectionTools::exportFunctionSignature()`:
   - Support for `self`, `static` and `never` types
   - Support for union types and intersection types
   - Support for functions returning references
 
 🐛 **Bug fixes**
 
-- `ReflectionTools::exportFunction()`:
+- `ReflectionTools::exportFunctionSignature()`:
   - constants are now properly exported with a leading `\`
   - nullable types are now always output with a leading `?`
 
 💄 **Cosmetic changes**
 
-- `ReflectionTools::exportFunction()`:
+- `ReflectionTools::exportFunctionSignature()`:
   - Null values in parameter default values are now output as `null` instead of `NULL`
   - Arrays in parameter default values are now exported with short array syntax, on a single line
   - There is no more space between closing parenthesis and colon, i.e. `): int` instead of `) : int`
+
 ## [0.4.1](https://github.com/brick/reflection/releases/tag/0.4.1) - 2020-10-24
 
 🐛 **Bug fix**
