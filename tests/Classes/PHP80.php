@@ -87,6 +87,9 @@ abstract class PHP80
     #[ExpectFunctionSignature('private function constantParams(string $a = \PHP_EOL, ?int $b = \Brick\Reflection\Tests\Classes\TEST)')]
     private function constantParams(string $a = \PHP_EOL, ?int $b = TEST) {}
 
+    #[ExpectFunctionSignature('public function unionTypes(\stdClass|string|null $a, ?string $b): \stdClass|string|int|null')]
+    public function unionTypes(stdClass|string|null $a, string|null $b): stdClass|int|string|null {}
+
     #[ExpectFunctionSignature(
         'abstract protected static function kitchenSink(' .
         '$a, ' .
@@ -107,6 +110,7 @@ abstract class PHP80
         'string $p = \PHP_EOL, ' .
         'mixed $q = null, ' .
         "array \$r = [1, null, true, 1.2, 'abc', ['nested']], " .
+        'array|string $s = [1, \'2\'], ' .
         '?\stdClass & ...$objects' .
         '): ?static'
     )]
@@ -136,6 +140,7 @@ abstract class PHP80
             'abc',
             ['nested'],
         ],
+        array|string $s = [1, '2'],
         ?stdClass & ...$objects,
     ): ?static;
 }

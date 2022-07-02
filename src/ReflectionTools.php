@@ -7,6 +7,8 @@ namespace Brick\Reflection;
 use Brick\VarExporter\VarExporter;
 use Exception;
 use ReflectionNamedType;
+use ReflectionType;
+use ReflectionUnionType;
 
 /**
  * Tools for the Reflection API.
@@ -190,21 +192,7 @@ class ReflectionTools
         $result .= '(' . $this->exportFunctionParameters($function) . ')';
 
         if (null !== $returnType = $function->getReturnType()) {
-            $result .= ': ';
-
-            if (! $returnType instanceof ReflectionNamedType) {
-                throw new Exception('Union / intersection types not yet supported');
-            }
-
-            if ($returnType->allowsNull() && $returnType->getName() !== 'mixed') {
-                $result .= '?';
-            }
-
-            if (! $returnType->isBuiltin() && $returnType->getName() !== 'self' && $returnType->getName() !== 'static') {
-                $result .= '\\';
-            }
-
-            $result .= $returnType->getName();
+            $result .= ': ' . $this->exportType($returnType);
         }
 
         return $result;
@@ -225,19 +213,7 @@ class ReflectionTools
             }
 
             if (null !== $type = $parameter->getType()) {
-                if (! $type instanceof ReflectionNamedType) {
-                    throw new Exception('Union / intersection types not yet supported');
-                }
-
-                if ($parameter->allowsNull() && $type->getName() !== 'mixed') {
-                    $result .= '?';
-                }
-
-                if (! $type->isBuiltin() && $type->getName() !== 'self') {
-                    $result .= '\\';
-                }
-
-                $result .= $type->getName() . ' ';
+                $result .= $this->exportType($type) . ' ';
             }
 
             if ($parameter->isPassedByReference()) {
@@ -258,6 +234,37 @@ class ReflectionTools
                 }
             }
         }
+
+        return $result;
+    }
+
+    private function exportType(ReflectionType $type): string
+    {
+        if ($type instanceof ReflectionUnionType) {
+            $result = [];
+
+            foreach ($type->getTypes() as $type) {
+                $result[] = $this->exportType($type);
+            }
+
+            return implode('|', $result);
+        }
+
+        if (! $type instanceof ReflectionNamedType) {
+            throw new Exception('Intersection types not yet supported');
+        }
+
+        $result = '';
+
+        if ($type->allowsNull() && $type->getName() !== 'mixed' && $type->getName() !== 'null') {
+            $result .= '?';
+        }
+
+        if (! $type->isBuiltin() && $type->getName() !== 'self' && $type->getName() !== 'static') {
+            $result .= '\\';
+        }
+
+        $result .= $type->getName();
 
         return $result;
     }
