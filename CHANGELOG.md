@@ -9,6 +9,7 @@
   - `ReflectionTools::getParameterTypes()`
   - `ReflectionTools::getPropertyTypes()`
 - `ReflectionTools::exportFunction()` has been renamed to `exportFunctionSignature()`
+- `ReflectionTools::exportFunctionParameters()` is no longer part of the public API
 
 ✨ **New features**
 

@@ -210,7 +210,7 @@ class ReflectionTools
      *
      * @return string
      */
-    public function exportFunctionParameters(\ReflectionFunctionAbstract $function) : string
+    private function exportFunctionParameters(\ReflectionFunctionAbstract $function) : string
     {
         $result = '';
 
