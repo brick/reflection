@@ -6,6 +6,7 @@ namespace Brick\Reflection\Tests\Classes;
 
 use Brick\Reflection\Tests\A;
 use Brick\Reflection\Tests\Attributes\ExpectFunctionSignature;
+use Closure;
 use stdClass;
 
 const TEST = 1;
@@ -92,6 +93,12 @@ abstract class PHP80
 
     #[ExpectFunctionSignature('public function & returnWithReference(): void')]
     public function & returnWithReference(): void {}
+
+    #[ExpectFunctionSignature('public function iterables(iterable $a, \stdClass|iterable $b): iterable')]
+    public function iterables(iterable $a, stdClass|iterable $b): iterable {}
+
+    #[ExpectFunctionSignature('public function callables(callable $a, \Closure|callable $b): callable')]
+    public function callables(callable $a, Closure|callable $b): callable {}
 
     #[ExpectFunctionSignature(
         'abstract protected static function & kitchenSink(' .
