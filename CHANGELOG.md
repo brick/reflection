@@ -13,7 +13,7 @@
 
 - `ReflectionTools::exportFunction()`:
   - Support for `self`, `static` and `never` types
-  - Support for union types
+  - Support for union types and intersection types
 
 🐛 **Bug fixes**
 

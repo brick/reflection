@@ -6,6 +6,7 @@ namespace Brick\Reflection;
 
 use Brick\VarExporter\VarExporter;
 use Exception;
+use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionType;
 use ReflectionUnionType;
@@ -238,20 +239,27 @@ class ReflectionTools
         return $result;
     }
 
+    /**
+     * @psalm-suppress RedundantCondition https://github.com/vimeo/psalm/pull/8201
+     */
     private function exportType(ReflectionType $type): string
     {
         if ($type instanceof ReflectionUnionType) {
-            $result = [];
+            return implode('|', array_map(
+                fn (ReflectionType $type) => $this->exportType($type),
+                $type->getTypes(),
+            ));
+        }
 
-            foreach ($type->getTypes() as $type) {
-                $result[] = $this->exportType($type);
-            }
-
-            return implode('|', $result);
+        if ($type instanceof ReflectionIntersectionType) {
+            return implode('&', array_map(
+                fn (ReflectionType $type) => $this->exportType($type),
+                $type->getTypes(),
+            ));
         }
 
         if (! $type instanceof ReflectionNamedType) {
-            throw new Exception('Intersection types not yet supported');
+            throw new Exception('Unsupported ReflectionType class: ' . get_class($type));
         }
 
         $result = '';
