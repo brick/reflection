@@ -31,8 +31,8 @@ abstract class PHP80
     #[ExpectFunctionSignature('public function returnMixed(): mixed')]
     public function returnMixed(): mixed {}
 
-    #[ExpectFunctionSignature('private function selfKitchenSink(self $a, ?self $b, ?self $c = null, ?self $d = null): self')]
-    private function selfKitchenSink(self $a, ?self $b, self $c = null, ?self $d = null): self {}
+    #[ExpectFunctionSignature('private function selfKitchenSink(self $a, ?self $b, ?self $c = null, ?self & $d = null): self')]
+    private function selfKitchenSink(self $a, ?self $b, self $c = null, ?self & $d = null): self {}
 
     #[ExpectFunctionSignature('private function returnNullableSelf(): ?self')]
     private function returnNullableSelf(): ?self {}
@@ -101,7 +101,7 @@ abstract class PHP80
     public function callables(callable $a, Closure|callable $b): callable {}
 
     #[ExpectFunctionSignature(
-        'abstract protected static function & kitchenSink(' .
+        'final protected static function & kitchenSink(' .
         '$a, ' .
         '& $b, ' .
         'int $c, ' .
@@ -124,7 +124,7 @@ abstract class PHP80
         '?\stdClass & ...$objects' .
         '): ?static'
     )]
-    abstract protected static function & kitchenSink(
+    final protected static function & kitchenSink(
         $a,
         & $b,
         int $c,
@@ -152,5 +152,5 @@ abstract class PHP80
         ],
         array|string $s = [1, '2'],
         ?stdClass & ...$objects,
-    ): ?static;
+    ): ?static {}
 }
