@@ -13,10 +13,6 @@ use ReflectionUnionType;
 
 /**
  * Tools for the Reflection API.
- *
- * The output of certain methods is cached, so the memory consumption of an instance of this class
- * can grow with time. To reclaim memory, one can just drop an instance of this class and replace
- * it with a fresh one at any time.
  */
 class ReflectionTools
 {
@@ -25,7 +21,7 @@ class ReflectionTools
      *
      * Like ReflectionClass::getMethods(), this method:
      *
-     * - does not return overridden protected or public class methods, and only return the overriding one;
+     * - does not return overridden protected or public class methods, and only returns the overriding one;
      * - returns methods inside a class in the order they are declared.
      *
      * Unlike ReflectionClass::getMethods(), this method:
@@ -69,7 +65,7 @@ class ReflectionTools
      *
      * Like ReflectionClass::getProperties(), this method:
      *
-     * - does not return overridden protected or public class properties, and only return the overriding one;
+     * - does not return overridden protected or public class properties, and only returns the overriding one;
      * - returns properties inside a class in the order they are declared.
      *
      * Unlike ReflectionClass::getProperties(), this method:
