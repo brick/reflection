@@ -12,39 +12,17 @@
       <code>\ReflectionMethod[]</code>
       <code>\ReflectionProperty[]</code>
     </InvalidReturnType>
-    <MixedArgument occurrences="3">
-      <code>$property-&gt;getType()</code>
+    <MixedArgument occurrences="1">
       <code>$type-&gt;getTypes()</code>
-      <code>$types</code>
     </MixedArgument>
-    <MixedArrayAssignment occurrences="1">
-      <code>$this-&gt;cache[$method][$key]</code>
-    </MixedArrayAssignment>
-    <MixedAssignment occurrences="2">
+    <MixedAssignment occurrences="1">
       <code>$modifier</code>
-      <code>$types</code>
     </MixedAssignment>
-    <MixedInferredReturnType occurrences="1">
-      <code>array</code>
-    </MixedInferredReturnType>
     <MixedOperand occurrences="1">
       <code>$modifier</code>
     </MixedOperand>
-    <MixedReturnStatement occurrences="1"/>
-    <MixedReturnTypeCoercion occurrences="4">
-      <code>$this-&gt;resolvePhpDocTypes($types, $function)</code>
-      <code>$this-&gt;resolvePhpDocTypes($types, $property)</code>
-      <code>string[]</code>
-      <code>string[]</code>
-    </MixedReturnTypeCoercion>
     <PossiblyNullOperand occurrences="1">
       <code>$parameter-&gt;getDefaultValueConstantName()</code>
     </PossiblyNullOperand>
-    <RedundantCondition occurrences="1">
-      <code>$returnType-&gt;getName() !== 'static'</code>
-    </RedundantCondition>
-    <UndefinedMethod occurrences="1">
-      <code>getName</code>
-    </UndefinedMethod>
   </file>
 </files>
