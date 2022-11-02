@@ -94,7 +94,8 @@ abstract class PHP80
     #[ExpectFunctionSignature('public function & returnWithReference(): void')]
     public function & returnWithReference(): void {}
 
-    #[ExpectFunctionSignature('public function iterables(iterable $a, \stdClass|iterable $b): iterable')]
+    #[ExpectFunctionSignature('public function iterables(iterable $a, \stdClass|iterable $b): iterable', '< 80200')]
+    #[ExpectFunctionSignature('public function iterables(iterable $a, \stdClass|\Traversable|array $b): iterable', '>= 80200')]
     public function iterables(iterable $a, stdClass|iterable $b): iterable {}
 
     #[ExpectFunctionSignature('public function callables(callable $a, \Closure|callable $b): callable')]

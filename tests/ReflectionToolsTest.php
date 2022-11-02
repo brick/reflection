@@ -7,12 +7,12 @@ namespace Brick\Reflection\Tests;
 use Brick\Reflection\ReflectionTools;
 
 use Brick\Reflection\Tests\Attributes\ExpectFunctionSignature;
-use Brick\Reflection\Tests\Classes\PHP72;
-use Brick\Reflection\Tests\Classes\PHP74;
 use Brick\Reflection\Tests\Classes\PHP80;
 use Brick\Reflection\Tests\Classes\PHP81;
+use Exception;
 use Generator;
 use PHPUnit\Framework\TestCase;
+use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -150,13 +150,63 @@ class ReflectionToolsTest extends TestCase
             foreach ($reflectionClass->getMethods() as $reflectionMethod) {
                 $reflectionAttributes = $reflectionMethod->getAttributes(ExpectFunctionSignature::class);
 
-                foreach ($reflectionAttributes as $reflectionAttribute) {
-                    /** @var ExpectFunctionSignature $attribute */
-                    $attribute = $reflectionAttribute->newInstance();
-                    yield [$reflectionMethod, $attribute->functionSignature];
-                }
+                $expectFunctionSignatures = array_map(
+                    fn (ReflectionAttribute $reflectionAttribute) => $reflectionAttribute->newInstance(),
+                    $reflectionAttributes,
+                );
+
+                $expectFunctionSignature = $this->matchExpectFunctionSignature($expectFunctionSignatures);
+
+                yield [$reflectionMethod, $expectFunctionSignature->functionSignature];
             }
         }
+    }
+
+    /**
+     * @param ExpectFunctionSignature[] $expectFunctionSignatures
+     */
+    private function matchExpectFunctionSignature(array $expectFunctionSignatures): ExpectFunctionSignature
+    {
+        foreach ($expectFunctionSignatures as $expectFunctionSignature) {
+            if ($this->phpMatchesVersionConstraint($expectFunctionSignature->phpVersionConstraint)) {
+                return $expectFunctionSignature;
+            }
+        }
+
+        throw new Exception('No ExpectFunctionSignature attribute found matching current PHP version');
+    }
+
+    private function phpMatchesVersionConstraint(?string $versionConstraint): bool
+    {
+        if ($versionConstraint === null) {
+            return true;
+        }
+
+        $versionConstraintParts = explode(' ', $versionConstraint);
+
+        if (count($versionConstraintParts) !== 2) {
+            throw new Exception("Invalid version constraint: $versionConstraint");
+        }
+
+        [$operator, $version] = $versionConstraintParts;
+
+        if (! ctype_digit($version)) {
+            throw new Exception("Invalid version: $version");
+        }
+
+        $version = (int) $version;
+
+        $allowedComparisonValues = match ($operator) {
+            '<' => [-1],
+            '<=' => [-1, 0],
+            '=' => [0],
+            '>=' => [0, 1],
+            '>' => [1],
+        };
+
+        $comparisonValue = (PHP_VERSION_ID <=> $version);
+
+        return in_array($comparisonValue, $allowedComparisonValues, true);
     }
 }
 
