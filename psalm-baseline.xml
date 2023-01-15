@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.23.0@f1fe6ff483bf325c803df9f510d09a03fd796f88">
+<files psalm-version="5.4.0@62db5d4f6a7ae0a20f7cc5a4952d730272fc0863">
   <file src="src/ReflectionTools.php">
     <ArgumentTypeCoercion occurrences="1">
       <code>$function</code>
@@ -15,12 +15,6 @@
     <MixedArgument occurrences="1">
       <code>$type-&gt;getTypes()</code>
     </MixedArgument>
-    <MixedAssignment occurrences="1">
-      <code>$modifier</code>
-    </MixedAssignment>
-    <MixedOperand occurrences="1">
-      <code>$modifier</code>
-    </MixedOperand>
     <PossiblyNullOperand occurrences="1">
       <code>$parameter-&gt;getDefaultValueConstantName()</code>
     </PossiblyNullOperand>
