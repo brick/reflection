@@ -221,7 +221,7 @@ class ReflectionTools
 
             if ($parameter->isDefaultValueAvailable()) {
                 if ($parameter->isDefaultValueConstant()) {
-                    /** @psalm-suppress PossiblyNullOperand */
+                    /** @psalm-suppress PossiblyNullOperand https://github.com/vimeo/psalm/pull/9115 */
                     $result .= ' = ' . '\\' . $parameter->getDefaultValueConstantName();
                 } else {
                     $result .= ' = ' . VarExporter::export($parameter->getDefaultValue(), VarExporter::INLINE_ARRAY);
