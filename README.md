@@ -31,7 +31,7 @@ existing code, etc.), `y` is incremented.
 
 **When a breaking change is introduced, a new `0.x` version cycle is always started.**
 
-It is therefore safe to lock your project to a given release cycle, such as `0.4.*`.
+It is therefore safe to lock your project to a given release cycle, such as `0.5.*`.
 
 If you need to upgrade to a newer release cycle, check the [release history](https://github.com/brick/reflection/releases)
 for a list of changes introduced by each further `0.x.0` version.
@@ -50,11 +50,8 @@ Just create an instance of `ReflectionTools` and you can use the following metho
 - `getClassProperties()` returns reflections of all the non-static properties that make up one object, including private properties of parent classes.
 - `getClassHierarchy()` returns the hierarchy of classes, starting from the first ancestor and ending with the class itself.
 - `getReflectionFunction()` returns a reflection object for any callable.
-- `getParameterTypes()` returns the types of a parameter, using native type-hints or falling back to the `@param` types documented.
-- `getPropertyTypes()` returns the types of a property, using native type-hints or falling back to the `@var` types documented.
 - `getFunctionName()` returns a meaningful name for the given function, including the class name if it is a method.
-- `exportFunction()` exports a function's signature.
-- `exportFunctionParameters()` exports a function's parameters. `Used by exportFunction()`.
+- `exportFunctionSignature()` exports a function's signature, such as `public function foo(string $bar): int`.
 
 ## ImportResolver
 
