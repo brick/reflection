@@ -1,6 +1,6 @@
 # Changelog
 
-## UNRELEASED (0.5.1)
+## [0.5.1](https://github.com/brick/reflection/releases/tag/0.5.1) - 2023-01-16
 
 ✨ **New features**
 
