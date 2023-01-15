@@ -235,21 +235,23 @@ class ReflectionTools
     /**
      * @psalm-suppress RedundantCondition https://github.com/vimeo/psalm/pull/8201
      */
-    private function exportType(ReflectionType $type): string
+    private function exportType(ReflectionType $type, bool $inUnion = false): string
     {
         if ($type instanceof ReflectionUnionType) {
             return implode('|', array_map(
-                fn (ReflectionType $type) => $this->exportType($type),
+                fn (ReflectionType $type) => $this->exportType($type, true),
                 $type->getTypes(),
             ));
         }
 
         if ($type instanceof ReflectionIntersectionType) {
             /** @psalm-suppress MixedArgument (ReflectionIntersectionType::getTypes() is not understood yet) */
-            return implode('&', array_map(
+            $result = implode('&', array_map(
                 fn (ReflectionType $type) => $this->exportType($type),
                 $type->getTypes(),
             ));
+
+            return $inUnion ? "($result)" : $result;
         }
 
         if (! $type instanceof ReflectionNamedType) {

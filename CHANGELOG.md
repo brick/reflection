@@ -1,5 +1,12 @@
 # Changelog
 
+## UNRELEASED (0.5.1)
+
+✨ **New features**
+
+- `ReflectionTools::exportFunctionSignature()`:
+  - Support for PHP 8.2 [DNF types](https://wiki.php.net/rfc/dnf_types)
+
 ## [0.5.0](https://github.com/brick/reflection/releases/tag/0.5.0) - 2023-01-15
 
 💥 **Breaking changes**

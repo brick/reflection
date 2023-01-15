@@ -9,6 +9,7 @@ use Brick\Reflection\ReflectionTools;
 use Brick\Reflection\Tests\Attributes\ExpectFunctionSignature;
 use Brick\Reflection\Tests\Classes\PHP80;
 use Brick\Reflection\Tests\Classes\PHP81;
+use Brick\Reflection\Tests\Classes\PHP82;
 use Exception;
 use Generator;
 use PHPUnit\Framework\TestCase;
@@ -143,6 +144,10 @@ class ReflectionToolsTest extends TestCase
 
         if (PHP_VERSION_ID >= 80100) {
             $classes[] = PHP81::class;
+        }
+
+        if (PHP_VERSION_ID >= 80200) {
+            $classes[] = PHP82::class;
         }
 
         foreach ($classes as $class) {
