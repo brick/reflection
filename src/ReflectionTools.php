@@ -36,8 +36,6 @@ class ReflectionTools
      * - returns the private methods of parent classes;
      * - returns methods in hierarchical order: methods from parent classes are returned first.
      *
-     * @param ReflectionClass $class
-     *
      * @return ReflectionMethod[]
      */
     public function getClassMethods(ReflectionClass $class) : array
@@ -80,8 +78,6 @@ class ReflectionTools
      * - returns the private properties of parent classes;
      * - returns properties in hierarchical order: properties from parent classes are returned first.
      *
-     * @param ReflectionClass $class
-     *
      * @return ReflectionProperty[]
      */
     public function getClassProperties(ReflectionClass $class) : array
@@ -115,8 +111,6 @@ class ReflectionTools
     /**
      * Returns the hierarchy of classes, starting from the first ancestor and ending with the class itself.
      *
-     * @param ReflectionClass $class
-     *
      * @return ReflectionClass[]
      */
     public function getClassHierarchy(ReflectionClass $class) : array
@@ -133,10 +127,6 @@ class ReflectionTools
 
     /**
      * Returns a reflection object for any callable.
-     *
-     * @param callable $function
-     *
-     * @return ReflectionFunctionAbstract
      */
     public function getReflectionFunction(callable $function) : ReflectionFunctionAbstract
     {
@@ -157,10 +147,6 @@ class ReflectionTools
      * Example for a method: Namespace\Class::method
      * Example for a function: strlen
      * Example for a closure: {closure}
-     *
-     * @param ReflectionFunctionAbstract $function
-     *
-     * @return string
      */
     public function getFunctionName(ReflectionFunctionAbstract $function) : string
     {
@@ -175,9 +161,7 @@ class ReflectionTools
      * Exports the function signature.
      *
      * @param ReflectionFunctionAbstract $function         The function to export.
-     * @param int                         $excludeModifiers An optional bitmask of modifiers to exclude.
-     *
-     * @return string
+     * @param int                        $excludeModifiers An optional bitmask of modifiers to exclude.
      */
     public function exportFunctionSignature(ReflectionFunctionAbstract $function, int $excludeModifiers = 0) : string
     {
@@ -208,11 +192,6 @@ class ReflectionTools
         return $result;
     }
 
-    /**
-     * @param ReflectionFunctionAbstract $function
-     *
-     * @return string
-     */
     private function exportFunctionParameters(ReflectionFunctionAbstract $function) : string
     {
         $result = '';

@@ -63,10 +63,6 @@ class ImportResolver
 
     /**
      * Returns the ReflectionClass of the given Reflector.
-     *
-     * @param Reflector $reflector
-     *
-     * @return ReflectionClass|null
      */
     private function getDeclaringClass(Reflector $reflector) : ?ReflectionClass
     {
@@ -89,12 +85,6 @@ class ImportResolver
         return null;
     }
 
-    /**
-     * @param string     $inferring
-     * @param Reflector $reflector
-     *
-     * @return InvalidArgumentException
-     */
     private function invalidArgumentException(string $inferring, Reflector $reflector) : InvalidArgumentException
     {
         return new InvalidArgumentException(sprintf(
