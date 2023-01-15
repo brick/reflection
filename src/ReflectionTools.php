@@ -5,9 +5,16 @@ declare(strict_types=1);
 namespace Brick\Reflection;
 
 use Brick\VarExporter\VarExporter;
+use Closure;
 use Exception;
+use Reflection;
+use ReflectionClass;
+use ReflectionFunction;
+use ReflectionFunctionAbstract;
 use ReflectionIntersectionType;
+use ReflectionMethod;
 use ReflectionNamedType;
+use ReflectionProperty;
 use ReflectionType;
 use ReflectionUnionType;
 
@@ -29,11 +36,11 @@ class ReflectionTools
      * - returns the private methods of parent classes;
      * - returns methods in hierarchical order: methods from parent classes are returned first.
      *
-     * @param \ReflectionClass $class
+     * @param ReflectionClass $class
      *
-     * @return \ReflectionMethod[]
+     * @return ReflectionMethod[]
      */
-    public function getClassMethods(\ReflectionClass $class) : array
+    public function getClassMethods(ReflectionClass $class) : array
     {
         $classes = $this->getClassHierarchy($class);
 
@@ -73,15 +80,15 @@ class ReflectionTools
      * - returns the private properties of parent classes;
      * - returns properties in hierarchical order: properties from parent classes are returned first.
      *
-     * @param \ReflectionClass $class
+     * @param ReflectionClass $class
      *
-     * @return \ReflectionProperty[]
+     * @return ReflectionProperty[]
      */
-    public function getClassProperties(\ReflectionClass $class) : array
+    public function getClassProperties(ReflectionClass $class) : array
     {
         $classes = $this->getClassHierarchy($class);
 
-        /** @var \ReflectionProperty[] $properties */
+        /** @var ReflectionProperty[] $properties */
         $properties = [];
 
         foreach ($classes as $hClass) {
@@ -108,11 +115,11 @@ class ReflectionTools
     /**
      * Returns the hierarchy of classes, starting from the first ancestor and ending with the class itself.
      *
-     * @param \ReflectionClass $class
+     * @param ReflectionClass $class
      *
-     * @return \ReflectionClass[]
+     * @return ReflectionClass[]
      */
-    public function getClassHierarchy(\ReflectionClass $class) : array
+    public function getClassHierarchy(ReflectionClass $class) : array
     {
         $classes = [];
 
@@ -129,19 +136,19 @@ class ReflectionTools
      *
      * @param callable $function
      *
-     * @return \ReflectionFunctionAbstract
+     * @return ReflectionFunctionAbstract
      */
-    public function getReflectionFunction(callable $function) : \ReflectionFunctionAbstract
+    public function getReflectionFunction(callable $function) : ReflectionFunctionAbstract
     {
         if (is_array($function)) {
-            return new \ReflectionMethod($function[0], $function[1]);
+            return new ReflectionMethod($function[0], $function[1]);
         }
 
-        if (is_object($function) && ! $function instanceof \Closure) {
-            return new \ReflectionMethod($function, '__invoke');
+        if (is_object($function) && ! $function instanceof Closure) {
+            return new ReflectionMethod($function, '__invoke');
         }
 
-        return new \ReflectionFunction($function);
+        return new ReflectionFunction($function);
     }
 
     /**
@@ -151,13 +158,13 @@ class ReflectionTools
      * Example for a function: strlen
      * Example for a closure: {closure}
      *
-     * @param \ReflectionFunctionAbstract $function
+     * @param ReflectionFunctionAbstract $function
      *
      * @return string
      */
-    public function getFunctionName(\ReflectionFunctionAbstract $function) : string
+    public function getFunctionName(ReflectionFunctionAbstract $function) : string
     {
-        if ($function instanceof \ReflectionMethod) {
+        if ($function instanceof ReflectionMethod) {
             return $function->getDeclaringClass()->getName() . '::' . $function->getName();
         }
 
@@ -167,20 +174,20 @@ class ReflectionTools
     /**
      * Exports the function signature.
      *
-     * @param \ReflectionFunctionAbstract $function         The function to export.
+     * @param ReflectionFunctionAbstract $function         The function to export.
      * @param int                         $excludeModifiers An optional bitmask of modifiers to exclude.
      *
      * @return string
      */
-    public function exportFunctionSignature(\ReflectionFunctionAbstract $function, int $excludeModifiers = 0) : string
+    public function exportFunctionSignature(ReflectionFunctionAbstract $function, int $excludeModifiers = 0) : string
     {
         $result = '';
 
-        if ($function instanceof \ReflectionMethod) {
+        if ($function instanceof ReflectionMethod) {
             $modifiers = $function->getModifiers();
             $modifiers &= ~ $excludeModifiers;
 
-            foreach (\Reflection::getModifierNames($modifiers) as $modifier) {
+            foreach (Reflection::getModifierNames($modifiers) as $modifier) {
                 $result .= $modifier . ' ';
             }
         }
@@ -202,11 +209,11 @@ class ReflectionTools
     }
 
     /**
-     * @param \ReflectionFunctionAbstract $function
+     * @param ReflectionFunctionAbstract $function
      *
      * @return string
      */
-    private function exportFunctionParameters(\ReflectionFunctionAbstract $function) : string
+    private function exportFunctionParameters(ReflectionFunctionAbstract $function) : string
     {
         $result = '';
 
@@ -287,9 +294,9 @@ class ReflectionTools
      * Note: ReflectionProperty and ReflectionObject do not explicitly share the same interface, but for the current
      * purpose they share the same set of methods, and as such are duck typed here.
      *
-     * @param \ReflectionProperty[]|\ReflectionMethod[] $reflectors
+     * @param ReflectionProperty[]|ReflectionMethod[] $reflectors
      *
-     * @return \ReflectionProperty[]|\ReflectionMethod[]
+     * @return ReflectionProperty[]|ReflectionMethod[]
      */
     private function filterReflectors(array $reflectors) : array
     {

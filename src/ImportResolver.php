@@ -5,6 +5,13 @@ declare(strict_types=1);
 namespace Brick\Reflection;
 
 use Doctrine\Common\Annotations\TokenParser;
+use InvalidArgumentException;
+use ReflectionClass;
+use ReflectionMethod;
+use ReflectionParameter;
+use ReflectionProperty;
+use Reflector;
+use RuntimeException;
 
 /**
  * Resolves class names using the rules PHP uses internally.
@@ -23,12 +30,12 @@ class ImportResolver
     /**
      * Class constructor.
      *
-     * @param \Reflector $context A reflection of the context in which the types will be resolved.
+     * @param Reflector $context A reflection of the context in which the types will be resolved.
      *                            The context can be a class, property, method or parameter.
      *
-     * @throws \InvalidArgumentException If the class or file name cannot be inferred from the context.
+     * @throws InvalidArgumentException If the class or file name cannot be inferred from the context.
      */
-    public function __construct(\Reflector $context)
+    public function __construct(Reflector $context)
     {
         $class = $this->getDeclaringClass($context);
 
@@ -45,7 +52,7 @@ class ImportResolver
         $source = @ file_get_contents($fileName);
 
         if ($source === false) {
-            throw new \RuntimeException('Could not read ' . $fileName);
+            throw new RuntimeException('Could not read ' . $fileName);
         }
 
         $parser = new TokenParser($source);
@@ -57,25 +64,25 @@ class ImportResolver
     /**
      * Returns the ReflectionClass of the given Reflector.
      *
-     * @param \Reflector $reflector
+     * @param Reflector $reflector
      *
-     * @return \ReflectionClass|null
+     * @return ReflectionClass|null
      */
-    private function getDeclaringClass(\Reflector $reflector) : ?\ReflectionClass
+    private function getDeclaringClass(Reflector $reflector) : ?ReflectionClass
     {
-        if ($reflector instanceof \ReflectionClass) {
+        if ($reflector instanceof ReflectionClass) {
             return $reflector;
         }
 
-        if ($reflector instanceof \ReflectionProperty) {
+        if ($reflector instanceof ReflectionProperty) {
             return $reflector->getDeclaringClass();
         }
 
-        if ($reflector instanceof \ReflectionMethod) {
+        if ($reflector instanceof ReflectionMethod) {
             return $reflector->getDeclaringClass();
         }
 
-        if ($reflector instanceof \ReflectionParameter) {
+        if ($reflector instanceof ReflectionParameter) {
             return $reflector->getDeclaringClass();
         }
 
@@ -84,13 +91,13 @@ class ImportResolver
 
     /**
      * @param string     $inferring
-     * @param \Reflector $reflector
+     * @param Reflector $reflector
      *
-     * @return \InvalidArgumentException
+     * @return InvalidArgumentException
      */
-    private function invalidArgumentException(string $inferring, \Reflector $reflector) : \InvalidArgumentException
+    private function invalidArgumentException(string $inferring, Reflector $reflector) : InvalidArgumentException
     {
-        return new \InvalidArgumentException(sprintf(
+        return new InvalidArgumentException(sprintf(
             'Cannot infer the %s from the given %s',
             $inferring,
             get_class($reflector)
