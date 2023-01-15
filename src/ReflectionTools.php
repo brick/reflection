@@ -134,7 +134,11 @@ class ReflectionTools
             return new ReflectionMethod($function[0], $function[1]);
         }
 
-        if (is_object($function) && ! $function instanceof Closure) {
+        if ($function instanceof Closure) {
+            return new ReflectionFunction($function);
+        }
+
+        if (is_object($function)) {
             return new ReflectionMethod($function, '__invoke');
         }
 
@@ -217,6 +221,7 @@ class ReflectionTools
 
             if ($parameter->isDefaultValueAvailable()) {
                 if ($parameter->isDefaultValueConstant()) {
+                    /** @psalm-suppress PossiblyNullOperand */
                     $result .= ' = ' . '\\' . $parameter->getDefaultValueConstantName();
                 } else {
                     $result .= ' = ' . VarExporter::export($parameter->getDefaultValue(), VarExporter::INLINE_ARRAY);
@@ -240,6 +245,7 @@ class ReflectionTools
         }
 
         if ($type instanceof ReflectionIntersectionType) {
+            /** @psalm-suppress MixedArgument (ReflectionIntersectionType::getTypes() is not understood yet) */
             return implode('&', array_map(
                 fn (ReflectionType $type) => $this->exportType($type),
                 $type->getTypes(),
@@ -270,12 +276,11 @@ class ReflectionTools
      *
      * This method removes overridden properties, while keeping original order.
      *
-     * Note: ReflectionProperty and ReflectionObject do not explicitly share the same interface, but for the current
-     * purpose they share the same set of methods, and as such are duck typed here.
+     * @template T of ReflectionProperty|ReflectionMethod
      *
-     * @param ReflectionProperty[]|ReflectionMethod[] $reflectors
+     * @param T[] $reflectors
      *
-     * @return ReflectionProperty[]|ReflectionMethod[]
+     * @return T[]
      */
     private function filterReflectors(array $reflectors) : array
     {
