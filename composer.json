@@ -10,7 +10,7 @@
     "require": {
         "php": "^8.0",
         "doctrine/annotations": "^1.10.4",
-        "brick/varexporter": "^0.3.7"
+        "brick/varexporter": "^0.3.7 || ^0.4.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0",
