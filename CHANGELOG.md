@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/brick/reflection/releases/tag/0.5.2) - 2024-05-02
+
+✨ **Compatibility improvements**
+
+- Compatibility with `brick/varexporter` version `0.4`
+- Compatibility with `doctrine/annotations` version `2.x`
+
 ## [0.5.1](https://github.com/brick/reflection/releases/tag/0.5.1) - 2023-01-16
 
 ✨ **New features**
