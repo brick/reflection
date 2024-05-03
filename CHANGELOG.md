@@ -1,5 +1,11 @@
 # Changelog
 
+## UNRELEASED (0.5.3)
+
+✨ **New features**
+
+- Support for `ReflectionClassConstant` as Reflector in `ImportResolver`
+
 ## [0.5.2](https://github.com/brick/reflection/releases/tag/0.5.2) - 2024-05-02
 
 ✨ **Compatibility improvements**

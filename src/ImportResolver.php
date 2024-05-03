@@ -7,6 +7,7 @@ namespace Brick\Reflection;
 use Doctrine\Common\Annotations\TokenParser;
 use InvalidArgumentException;
 use ReflectionClass;
+use ReflectionClassConstant;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
@@ -68,6 +69,10 @@ class ImportResolver
     {
         if ($reflector instanceof ReflectionClass) {
             return $reflector;
+        }
+
+        if ($reflector instanceof ReflectionClassConstant) {
+            return $reflector->getDeclaringClass();
         }
 
         if ($reflector instanceof ReflectionProperty) {

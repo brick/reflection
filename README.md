@@ -72,7 +72,7 @@ class Test {
 }
 ```
 
-You can create a resolver by passing any reflection object belonging to the PHP file as a context: a `ReflectionClass`, a `ReflectionProperty`, a `ReflectionMethod` or a `ReflectionParameter`:
+You can create a resolver by passing any reflection object belonging to the PHP file as a context: a `ReflectionClass`, a `ReflectionClassConstant`, a `ReflectionProperty`, a `ReflectionMethod` or a `ReflectionParameter`:
 
 ```php
 use Brick\Reflection\ImportResolver;
