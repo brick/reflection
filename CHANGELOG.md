@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.4](https://github.com/brick/reflection/releases/tag/0.5.4) - 2024-05-10
+
+✨ **Compatibility improvements**
+
+- Compatibility with `brick/varexporter` version `0.5`
+
 ## [0.5.3](https://github.com/brick/reflection/releases/tag/0.5.3) - 2024-05-03
 
 ✨ **New features**
