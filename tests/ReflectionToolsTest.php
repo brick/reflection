@@ -30,6 +30,80 @@ class ReflectionToolsTest extends TestCase
         self::assertCount(0, $methods);
     }
 
+    public function testGetReflectionFunction()
+    {
+        $reflectionFunc = function() {};
+        $function = (new ReflectionTools)->getReflectionFunction($reflectionFunc);
+
+        $this->assertInstanceOf(\ReflectionFunction::class, $function);
+        $this->assertSame('Brick\Reflection\Tests\{closure}', $function->getName());
+    }
+
+    public function testGetFunctionParameterTypesShouldReturnEmptyArray()
+    {
+        $types = (new ReflectionTools)->getFunctionParameterTypes(new \ReflectionFunction('Brick\Reflection\Tests\reflectedFunc'));
+
+        $this->assertSame([], $types);
+    }
+
+    public function testGetFunctionParameterTypesShouldReturnTypesArray()
+    {
+        $types = (new ReflectionTools)->getFunctionParameterTypes(new \ReflectionFunction('Brick\Reflection\Tests\reflectedParameterFunc'));
+
+        $this->assertSame(['arg' => ['string']], $types);
+    }
+
+    public function testGetParameterTypesShouldReturnTypeArray()
+    {
+        $types = (new ReflectionTools)->getParameterTypes(new \ReflectionParameter([
+            ReflectionTarget::class, 'privateFunc',
+        ], 'str'));
+
+        $this->assertSame(['string'], $types);
+    }
+
+    public function testGetPropertyTypesShouldReturnEmptyArray()
+    {
+        $types = (new ReflectionTools)->getPropertyTypes(new \ReflectionProperty(ReflectionTarget::class, 'foo'));
+
+        $this->assertCount(0, $types);
+    }
+
+    public function testGetPropertyTypesShouldReturnTypeArray()
+    {
+        $types = (new ReflectionTools)->getPropertyTypes(new \ReflectionProperty(ReflectionTarget::class, 'bar'));
+
+        $this->assertSame(['string'], $types);
+    }
+
+    public function testGetPropertyClassShouldReturnNull()
+    {
+        $propertyClass = (new ReflectionTools)->getPropertyClass(new \ReflectionProperty(ReflectionTarget::class, 'foo'));
+
+        $this->assertNull($propertyClass);
+    }
+
+    public function testGetPropertyClassShouldReturnTypeString()
+    {
+        $propertyClass = (new ReflectionTools)->getPropertyClass(new \ReflectionProperty(ReflectionTarget::class, 'barWithType'));
+
+        $this->assertSame('Exception', $propertyClass);
+    }
+
+    public function testGetFunctionNameShouldReturnClassMethodName()
+    {
+        $functionName = (new ReflectionTools)->getFunctionName(new \ReflectionMethod(ReflectionTarget::class, 'publicStaticMethod'));
+
+        $this->assertSame('Brick\Reflection\Tests\ReflectionTarget::publicStaticMethod', $functionName);
+    }
+
+    public function testGetFunctionNameShouldReturnCurrentFunctionName()
+    {
+        $functionName = (new ReflectionTools)->getFunctionName(new \ReflectionFunction('Brick\Reflection\Tests\reflectedFunc'));
+
+        $this->assertSame('Brick\Reflection\Tests\reflectedFunc', $functionName);
+    }
+
     /**
      * @return void
      */
