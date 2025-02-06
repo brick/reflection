@@ -244,7 +244,6 @@ class ReflectionTools
         }
 
         if ($type instanceof ReflectionIntersectionType) {
-            /** @psalm-suppress MixedArgument (ReflectionIntersectionType::getTypes() is not understood yet) */
             $result = implode('&', array_map(
                 fn (ReflectionType $type) => $this->exportType($type),
                 $type->getTypes(),
