@@ -140,11 +140,8 @@ class ReflectionToolsTest extends TestCase
     {
         $classes = [
             PHP80::class,
+            PHP81::class,
         ];
-
-        if (PHP_VERSION_ID >= 80100) {
-            $classes[] = PHP81::class;
-        }
 
         if (PHP_VERSION_ID >= 80200) {
             $classes[] = PHP82::class;
