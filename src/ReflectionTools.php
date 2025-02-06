@@ -253,7 +253,7 @@ class ReflectionTools
         }
 
         if (! $type instanceof ReflectionNamedType) {
-            throw new Exception('Unsupported ReflectionType class: ' . get_class($type));
+            throw new Exception('Unsupported ReflectionType class: ' . $type::class);
         }
 
         $result = '';

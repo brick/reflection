@@ -21,7 +21,7 @@ use RuntimeException;
  */
 class ImportResolver
 {
-    private string $namespace;
+    private readonly string $namespace;
 
     /**
      * @var array<string, string>
@@ -95,7 +95,7 @@ class ImportResolver
         return new InvalidArgumentException(sprintf(
             'Cannot infer the %s from the given %s',
             $inferring,
-            get_class($reflector)
+            $reflector::class
         ));
     }
 
