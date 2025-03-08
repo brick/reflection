@@ -53,4 +53,45 @@ class ImportResolverTest extends TestCase
         self::assertResolve(Tools::class . '\A', 'Tools\A');
         self::assertResolve(Tools::class . '\A\B', 'Tools\A\B');
     }
+
+    /**
+     * @expectedException        \InvalidArgumentException
+     * @expectedExceptionMessage Cannot infer the file name from the given ReflectionObject
+     */
+    public function testConstructorWithInvalidInferFileNameShouldThrowInvalidArgumentException()
+    {
+        $resolver = new ImportResolver(new \ReflectionObject(new \Exception));
+    }
+
+    public function testConstructorWithReflectionProperty()
+    {
+        $resolver = new ImportResolver(new \ReflectionProperty(ReflectionTarget::class, 'foo'));
+
+        $this->assertSame(ReflectionTarget::class, $resolver->resolve('ReflectionTarget'));
+    }
+
+    public function testConstructorWithReflectionMethod()
+    {
+        $resolver = new ImportResolver(new \ReflectionMethod(ReflectionTarget::class, 'publicStaticMethod'));
+
+        $this->assertSame(ReflectionTarget::class, $resolver->resolve('ReflectionTarget'));
+    }
+
+    public function testConstructorWithReflectionParameter()
+    {
+        $resolver = new ImportResolver(new \ReflectionParameter([
+            ReflectionTarget::class, 'privateFunc',
+        ], 'str'));
+
+        $this->assertSame(ReflectionTarget::class, $resolver->resolve('ReflectionTarget'));
+    }
+
+    /**
+     * @expectedException        \InvalidArgumentException
+     * @expectedExceptionMessage Cannot infer the declaring class from the given ReflectionFunction
+     */
+    public function testConstructorWithReflectionFunctionThrowsException()
+    {
+        $resolver = new ImportResolver(new \ReflectionFunction('Brick\Reflection\Tests\reflectedFunc'));
+    }
 }
