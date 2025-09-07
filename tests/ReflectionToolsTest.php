@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Brick\Reflection\Tests;
 
 use Brick\Reflection\ReflectionTools;
-
 use Brick\Reflection\Tests\Attributes\ExpectFunctionSignature;
 use Brick\Reflection\Tests\Classes\PhpVersion\PHP80;
 use Brick\Reflection\Tests\Classes\PhpVersion\PHP81;
@@ -17,80 +16,76 @@ use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
 
+use function array_map;
+use function count;
+use function ctype_digit;
+use function explode;
+use function in_array;
+
+use const PHP_VERSION_ID;
+
 /**
  * Unit tests for class ReflectionTools.
  */
 class ReflectionToolsTest extends TestCase
 {
-    public function testGetMethodsDoesNotReturnStaticMethods() : void
+    public function testGetMethodsDoesNotReturnStaticMethods(): void
     {
-        $class = new \ReflectionClass(__NAMESPACE__ . '\\Classes\\S');
-        $methods = (new ReflectionTools)->getClassMethods($class);
+        $class = new ReflectionClass(__NAMESPACE__ . '\\Classes\\S');
+        $methods = (new ReflectionTools())->getClassMethods($class);
 
         self::assertCount(0, $methods);
     }
 
-    /**
-     * @return void
-     */
-    public function testGetPropertiesDoesNotReturnStaticProperties() : void
+    public function testGetPropertiesDoesNotReturnStaticProperties(): void
     {
-        $class = new \ReflectionClass(__NAMESPACE__ . '\\Classes\\S');
-        $properties = (new ReflectionTools)->getClassProperties($class);
+        $class = new ReflectionClass(__NAMESPACE__ . '\\Classes\\S');
+        $properties = (new ReflectionTools())->getClassProperties($class);
 
         self::assertCount(0, $properties);
     }
 
     /**
      * @dataProvider hierarchyTestProvider
-     *
-     * @param string $class
-     * @param array  $expected
      */
-    public function testGetMethods(string $class, array $expected) : void
+    public function testGetMethods(string $class, array $expected): void
     {
-        $class = new \ReflectionClass(__NAMESPACE__ . '\\Classes\\' . $class);
-        $methods = (new ReflectionTools)->getClassMethods($class);
+        $class = new ReflectionClass(__NAMESPACE__ . '\\Classes\\' . $class);
+        $methods = (new ReflectionTools())->getClassMethods($class);
 
         $actual = [];
 
         foreach ($methods as $method) {
             $actual[] = [
                 $method->getDeclaringClass()->getShortName(),
-                $method->getName()
+                $method->getName(),
             ];
         }
 
-        self::assertEquals($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     /**
      * @dataProvider hierarchyTestProvider
-     *
-     * @param string $class
-     * @param array  $expected
      */
-    public function testGetProperties(string $class, array $expected) : void
+    public function testGetProperties(string $class, array $expected): void
     {
-        $class = new \ReflectionClass(__NAMESPACE__ . '\\Classes\\' . $class);
-        $properties = (new ReflectionTools)->getClassProperties($class);
+        $class = new ReflectionClass(__NAMESPACE__ . '\\Classes\\' . $class);
+        $properties = (new ReflectionTools())->getClassProperties($class);
 
         $actual = [];
 
         foreach ($properties as $property) {
             $actual[] = [
                 $property->getDeclaringClass()->getShortName(),
-                $property->getName()
+                $property->getName(),
             ];
         }
 
-        self::assertEquals($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
-    /**
-     * @return array
-     */
-    public function hierarchyTestProvider() : array
+    public function hierarchyTestProvider(): array
     {
         return [
             ['A', [
@@ -102,14 +97,14 @@ class ReflectionToolsTest extends TestCase
                 ['A', 'a'],
                 ['B', 'a'],
                 ['B', 'b'],
-                ['B', 'c']
+                ['B', 'c'],
             ]],
             ['C', [
                 ['A', 'a'],
                 ['B', 'a'],
                 ['C', 'a'],
                 ['C', 'b'],
-                ['C', 'c']
+                ['C', 'c'],
             ]],
             ['X', [
                 ['X', 'a'],
@@ -123,20 +118,20 @@ class ReflectionToolsTest extends TestCase
                 ['Y', 'd'],
                 ['Y', 'e'],
                 ['Y', 'f'],
-            ]]
+            ]],
         ];
     }
 
     /**
      * @dataProvider providerExportFunction
      */
-    public function testExportFunctionSignature(ReflectionMethod $method, string $expectedFunctionSignature) : void
+    public function testExportFunctionSignature(ReflectionMethod $method, string $expectedFunctionSignature): void
     {
         $tools = new ReflectionTools();
         self::assertSame($expectedFunctionSignature, $tools->exportFunctionSignature($method));
     }
 
-    public function providerExportFunction() : Generator
+    public function providerExportFunction(): Generator
     {
         $classes = [
             PHP80::class,

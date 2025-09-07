@@ -18,6 +18,12 @@ use ReflectionProperty;
 use ReflectionType;
 use ReflectionUnionType;
 
+use function array_map;
+use function array_reverse;
+use function implode;
+use function is_array;
+use function is_object;
+
 /**
  * Tools for the Reflection API.
  */
@@ -38,7 +44,7 @@ class ReflectionTools
      *
      * @return ReflectionMethod[]
      */
-    public function getClassMethods(ReflectionClass $class) : array
+    public function getClassMethods(ReflectionClass $class): array
     {
         $classes = $this->getClassHierarchy($class);
 
@@ -80,7 +86,7 @@ class ReflectionTools
      *
      * @return ReflectionProperty[]
      */
-    public function getClassProperties(ReflectionClass $class) : array
+    public function getClassProperties(ReflectionClass $class): array
     {
         $classes = $this->getClassHierarchy($class);
 
@@ -113,7 +119,7 @@ class ReflectionTools
      *
      * @return ReflectionClass[]
      */
-    public function getClassHierarchy(ReflectionClass $class) : array
+    public function getClassHierarchy(ReflectionClass $class): array
     {
         $classes = [];
 
@@ -128,7 +134,7 @@ class ReflectionTools
     /**
      * Returns a reflection object for any callable.
      */
-    public function getReflectionFunction(callable $function) : ReflectionFunctionAbstract
+    public function getReflectionFunction(callable $function): ReflectionFunctionAbstract
     {
         if (is_array($function)) {
             return new ReflectionMethod($function[0], $function[1]);
@@ -152,7 +158,7 @@ class ReflectionTools
      * Example for a function: strlen
      * Example for a closure: {closure}
      */
-    public function getFunctionName(ReflectionFunctionAbstract $function) : string
+    public function getFunctionName(ReflectionFunctionAbstract $function): string
     {
         if ($function instanceof ReflectionMethod) {
             return $function->getDeclaringClass()->getName() . '::' . $function->getName();
@@ -167,13 +173,13 @@ class ReflectionTools
      * @param ReflectionFunctionAbstract $function         The function to export.
      * @param int                        $excludeModifiers An optional bitmask of modifiers to exclude.
      */
-    public function exportFunctionSignature(ReflectionFunctionAbstract $function, int $excludeModifiers = 0) : string
+    public function exportFunctionSignature(ReflectionFunctionAbstract $function, int $excludeModifiers = 0): string
     {
         $result = '';
 
         if ($function instanceof ReflectionMethod) {
             $modifiers = $function->getModifiers();
-            $modifiers &= ~ $excludeModifiers;
+            $modifiers &= ~$excludeModifiers;
 
             foreach (Reflection::getModifierNames($modifiers) as $modifier) {
                 $result .= $modifier . ' ';
@@ -196,7 +202,7 @@ class ReflectionTools
         return $result;
     }
 
-    private function exportFunctionParameters(ReflectionFunctionAbstract $function) : string
+    private function exportFunctionParameters(ReflectionFunctionAbstract $function): string
     {
         $result = '';
 
@@ -282,13 +288,14 @@ class ReflectionTools
      *
      * @return T[]
      */
-    private function filterReflectors(array $reflectors) : array
+    private function filterReflectors(array $reflectors): array
     {
         $filteredReflectors = [];
 
         foreach ($reflectors as $index => $reflector) {
             if ($reflector->isPrivate()) {
                 $filteredReflectors[] = $reflector;
+
                 continue;
             }
 
