@@ -7,9 +7,9 @@ namespace Brick\Reflection\Tests;
 use Brick\Reflection\ReflectionTools;
 
 use Brick\Reflection\Tests\Attributes\ExpectFunctionSignature;
-use Brick\Reflection\Tests\Classes\PHP80;
-use Brick\Reflection\Tests\Classes\PHP81;
-use Brick\Reflection\Tests\Classes\PHP82;
+use Brick\Reflection\Tests\Classes\PhpVersion\PHP80;
+use Brick\Reflection\Tests\Classes\PhpVersion\PHP81;
+use Brick\Reflection\Tests\Classes\PhpVersion\PHP82;
 use Exception;
 use Generator;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +24,7 @@ class ReflectionToolsTest extends TestCase
 {
     public function testGetMethodsDoesNotReturnStaticMethods() : void
     {
-        $class = new \ReflectionClass(__NAMESPACE__ . '\\S');
+        $class = new \ReflectionClass(__NAMESPACE__ . '\\Classes\\S');
         $methods = (new ReflectionTools)->getClassMethods($class);
 
         self::assertCount(0, $methods);
@@ -35,7 +35,7 @@ class ReflectionToolsTest extends TestCase
      */
     public function testGetPropertiesDoesNotReturnStaticProperties() : void
     {
-        $class = new \ReflectionClass(__NAMESPACE__ . '\\S');
+        $class = new \ReflectionClass(__NAMESPACE__ . '\\Classes\\S');
         $properties = (new ReflectionTools)->getClassProperties($class);
 
         self::assertCount(0, $properties);
@@ -49,7 +49,7 @@ class ReflectionToolsTest extends TestCase
      */
     public function testGetMethods(string $class, array $expected) : void
     {
-        $class = new \ReflectionClass(__NAMESPACE__ . '\\' . $class);
+        $class = new \ReflectionClass(__NAMESPACE__ . '\\Classes\\' . $class);
         $methods = (new ReflectionTools)->getClassMethods($class);
 
         $actual = [];
@@ -72,7 +72,7 @@ class ReflectionToolsTest extends TestCase
      */
     public function testGetProperties(string $class, array $expected) : void
     {
-        $class = new \ReflectionClass(__NAMESPACE__ . '\\' . $class);
+        $class = new \ReflectionClass(__NAMESPACE__ . '\\Classes\\' . $class);
         $properties = (new ReflectionTools)->getClassProperties($class);
 
         $actual = [];
@@ -210,70 +210,4 @@ class ReflectionToolsTest extends TestCase
 
         return in_array($comparisonValue, $allowedComparisonValues, true);
     }
-}
-
-class A
-{
-    private $a;
-    protected $b;
-    public $c;
-
-    private function a() {}
-    protected function b() {}
-    public function c() {}
-}
-
-class B extends A
-{
-    private $a;
-    protected $b;
-    public $c;
-
-    private function a() {}
-    protected function b() {}
-    public function c() {}
-}
-
-class C extends B
-{
-    private $a;
-    protected $b;
-    public $c;
-
-    private function a() {}
-    protected function b() {}
-    public function c() {}
-}
-
-class S
-{
-    private static $a;
-    protected static $b;
-    public static $c;
-
-    private static function a() {}
-    protected static function b() {}
-    public static function c() {}
-}
-
-class X
-{
-    public $a;
-    public $b;
-    public $c;
-
-    public function a() {}
-    public function b() {}
-    public function c() {}
-}
-
-class Y extends X
-{
-    public $d;
-    public $e;
-    public $f;
-
-    public function d() {}
-    public function e() {}
-    public function f() {}
 }

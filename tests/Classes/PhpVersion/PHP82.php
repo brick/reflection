@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Brick\Reflection\Tests\Classes;
+namespace Brick\Reflection\Tests\Classes\PhpVersion;
 
 use Brick\Reflection\Tests\Attributes\ExpectFunctionSignature;
 use Countable;

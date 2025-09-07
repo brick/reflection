@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Brick\Reflection\Tests\Classes;
+namespace Brick\Reflection\Tests\Classes\PhpVersion;
 
 use Brick\Reflection\Tests\A;
 use Brick\Reflection\Tests\Attributes\ExpectFunctionSignature;
@@ -85,7 +85,7 @@ abstract class PHP80
     #[ExpectFunctionSignature('public function nullableVariadicsWithReference(int $a, ?string & ...$b)')]
     public function nullableVariadicsWithReference(int $a, ?string & ...$b) {}
 
-    #[ExpectFunctionSignature('private function constantParams(string $a = \PHP_EOL, ?int $b = \Brick\Reflection\Tests\Classes\TEST)')]
+    #[ExpectFunctionSignature('private function constantParams(string $a = \PHP_EOL, ?int $b = \Brick\Reflection\Tests\Classes\PhpVersion\TEST)')]
     private function constantParams(string $a = \PHP_EOL, ?int $b = TEST) {}
 
     #[ExpectFunctionSignature('public function unionTypes(\stdClass|string|null $a, ?string $b): \stdClass|string|int|null')]
