@@ -11,6 +11,7 @@ use Brick\Reflection\Tests\Classes\PhpVersion\PHP81;
 use Brick\Reflection\Tests\Classes\PhpVersion\PHP82;
 use Exception;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use ReflectionAttribute;
 use ReflectionClass;
@@ -45,9 +46,7 @@ class ReflectionToolsTest extends TestCase
         self::assertCount(0, $properties);
     }
 
-    /**
-     * @dataProvider hierarchyTestProvider
-     */
+    #[DataProvider('hierarchyTestProvider')]
     public function testGetMethods(string $class, array $expected): void
     {
         $class = new ReflectionClass(__NAMESPACE__ . '\\Classes\\' . $class);
@@ -65,9 +64,7 @@ class ReflectionToolsTest extends TestCase
         self::assertSame($expected, $actual);
     }
 
-    /**
-     * @dataProvider hierarchyTestProvider
-     */
+    #[DataProvider('hierarchyTestProvider')]
     public function testGetProperties(string $class, array $expected): void
     {
         $class = new ReflectionClass(__NAMESPACE__ . '\\Classes\\' . $class);
@@ -122,9 +119,7 @@ class ReflectionToolsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider providerExportFunction
-     */
+    #[DataProvider('providerExportFunction')]
     public function testExportFunctionSignature(ReflectionMethod $method, string $expectedFunctionSignature): void
     {
         $tools = new ReflectionTools();
