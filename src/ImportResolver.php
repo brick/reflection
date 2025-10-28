@@ -25,7 +25,7 @@ use function substr;
  *
  * @see http://www.php.net/manual/en/language.namespaces.importing.php
  */
-class ImportResolver
+final class ImportResolver
 {
     private readonly string $namespace;
 

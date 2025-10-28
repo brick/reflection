@@ -27,7 +27,7 @@ use function is_object;
 /**
  * Tools for the Reflection API.
  */
-class ReflectionTools
+final class ReflectionTools
 {
     /**
      * Returns reflections of all the non-static methods that make up one object.
