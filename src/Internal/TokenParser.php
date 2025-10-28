@@ -29,6 +29,8 @@ use const T_WHITESPACE;
  * https://github.com/doctrine/annotations/blob/2.0.2/lib/Doctrine/Common/Annotations/TokenParser.php
  *
  * @psalm-type Token = array{0: int, 1: string, 2: int}|string
+ *
+ * @internal
  */
 final class TokenParser
 {
