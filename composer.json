@@ -9,7 +9,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "doctrine/annotations": "^1.10.4 || ^2.0",
         "brick/varexporter": "^0.3.7 || ^0.4.0 || ^0.5.0"
     },
     "require-dev": {

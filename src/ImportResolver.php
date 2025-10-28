@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Brick\Reflection;
 
-use Doctrine\Common\Annotations\TokenParser;
+use Brick\Reflection\Internal\TokenParser;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionClassConstant;
