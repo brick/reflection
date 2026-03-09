@@ -82,7 +82,7 @@ class ReflectionToolsTest extends TestCase
         self::assertSame($expected, $actual);
     }
 
-    public function hierarchyTestProvider(): array
+    public static function hierarchyTestProvider(): array
     {
         return [
             ['A', [
@@ -126,7 +126,7 @@ class ReflectionToolsTest extends TestCase
         self::assertSame($expectedFunctionSignature, $tools->exportFunctionSignature($method));
     }
 
-    public function providerExportFunction(): Generator
+    public static function providerExportFunction(): Generator
     {
         $classes = [
             PHP80::class,
@@ -147,7 +147,7 @@ class ReflectionToolsTest extends TestCase
                     $reflectionAttributes,
                 );
 
-                $expectFunctionSignature = $this->matchExpectFunctionSignature($expectFunctionSignatures);
+                $expectFunctionSignature = self::matchExpectFunctionSignature($expectFunctionSignatures);
 
                 yield [$reflectionMethod, $expectFunctionSignature->functionSignature];
             }
@@ -157,10 +157,10 @@ class ReflectionToolsTest extends TestCase
     /**
      * @param ExpectFunctionSignature[] $expectFunctionSignatures
      */
-    private function matchExpectFunctionSignature(array $expectFunctionSignatures): ExpectFunctionSignature
+    private static function matchExpectFunctionSignature(array $expectFunctionSignatures): ExpectFunctionSignature
     {
         foreach ($expectFunctionSignatures as $expectFunctionSignature) {
-            if ($this->phpMatchesVersionConstraint($expectFunctionSignature->phpVersionConstraint)) {
+            if (self::phpMatchesVersionConstraint($expectFunctionSignature->phpVersionConstraint)) {
                 return $expectFunctionSignature;
             }
         }
@@ -168,7 +168,7 @@ class ReflectionToolsTest extends TestCase
         throw new Exception('No ExpectFunctionSignature attribute found matching current PHP version');
     }
 
-    private function phpMatchesVersionConstraint(?string $versionConstraint): bool
+    private static function phpMatchesVersionConstraint(?string $versionConstraint): bool
     {
         if ($versionConstraint === null) {
             return true;
