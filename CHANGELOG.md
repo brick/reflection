@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.7.1](https://github.com/brick/reflection/releases/tag/0.7.1) - 2026-03-09
+
+- Compatibility with `brick/varexporter` versions `0.6` and `0.7` (#6 by @jorisvaesen)
+
 ## [0.7.0](https://github.com/brick/reflection/releases/tag/0.7.0) - 2025-10-28
 
 💥 **Breaking changes**
