@@ -31,10 +31,12 @@ abstract class PHP80
     #[ExpectFunctionSignature('public function returnMixed(): mixed')]
     public function returnMixed(): mixed {}
 
-    #[ExpectFunctionSignature('private function selfKitchenSink(self $a, ?self $b, ?self $c = null, ?self & $d = null): self')]
+    #[ExpectFunctionSignature('private function selfKitchenSink(\Brick\Reflection\Tests\Classes\PhpVersion\PHP80 $a, ?\Brick\Reflection\Tests\Classes\PhpVersion\PHP80 $b, ?\Brick\Reflection\Tests\Classes\PhpVersion\PHP80 $c = null, ?\Brick\Reflection\Tests\Classes\PhpVersion\PHP80 & $d = null): \Brick\Reflection\Tests\Classes\PhpVersion\PHP80', '>= 80500')]
+    #[ExpectFunctionSignature('private function selfKitchenSink(self $a, ?self $b, ?self $c = null, ?self & $d = null): self', '< 80500')]
     private function selfKitchenSink(self $a, ?self $b, self $c = null, ?self & $d = null): self {}
 
-    #[ExpectFunctionSignature('private function returnNullableSelf(): ?self')]
+    #[ExpectFunctionSignature('private function returnNullableSelf(): ?\Brick\Reflection\Tests\Classes\PhpVersion\PHP80', '>= 80500')]
+    #[ExpectFunctionSignature('private function returnNullableSelf(): ?self', '< 80500')]
     private function returnNullableSelf(): ?self {}
 
     #[ExpectFunctionSignature('private function returnStatic(): static')]
