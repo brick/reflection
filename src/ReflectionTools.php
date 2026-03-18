@@ -20,9 +20,11 @@ use ReflectionUnionType;
 
 use function array_map;
 use function array_reverse;
+use function assert;
 use function implode;
 use function is_array;
 use function is_object;
+use function is_string;
 
 /**
  * Tools for the Reflection API.
@@ -41,6 +43,8 @@ final class ReflectionTools
      *
      * - returns the private methods of parent classes;
      * - returns methods in hierarchical order: methods from parent classes are returned first.
+     *
+     * @param ReflectionClass<object> $class
      *
      * @return ReflectionMethod[]
      */
@@ -84,6 +88,8 @@ final class ReflectionTools
      * - returns the private properties of parent classes;
      * - returns properties in hierarchical order: properties from parent classes are returned first.
      *
+     * @param ReflectionClass<object> $class
+     *
      * @return ReflectionProperty[]
      */
     public function getClassProperties(ReflectionClass $class): array
@@ -117,7 +123,9 @@ final class ReflectionTools
     /**
      * Returns the hierarchy of classes, starting from the first ancestor and ending with the class itself.
      *
-     * @return ReflectionClass[]
+     * @param ReflectionClass<object> $class
+     *
+     * @return ReflectionClass<object>[]
      */
     public function getClassHierarchy(ReflectionClass $class): array
     {
@@ -137,6 +145,7 @@ final class ReflectionTools
     public function getReflectionFunction(callable $function): ReflectionFunctionAbstract
     {
         if (is_array($function)) {
+            /** @var array{0: object|string, 1: string} $function */
             return new ReflectionMethod($function[0], $function[1]);
         }
 
@@ -147,6 +156,8 @@ final class ReflectionTools
         if (is_object($function)) {
             return new ReflectionMethod($function, '__invoke');
         }
+
+        assert(is_string($function));
 
         return new ReflectionFunction($function);
     }
@@ -237,9 +248,6 @@ final class ReflectionTools
         return $result;
     }
 
-    /**
-     * @psalm-suppress RedundantCondition https://github.com/vimeo/psalm/pull/8201
-     */
     private function exportType(ReflectionType $type, bool $inUnion = false): string
     {
         if ($type instanceof ReflectionUnionType) {

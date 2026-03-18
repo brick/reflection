@@ -100,6 +100,8 @@ final class ImportResolver
 
     /**
      * Returns the ReflectionClass of the given Reflector.
+     *
+     * @return ReflectionClass<object>|null
      */
     private function getDeclaringClass(Reflector $reflector): ?ReflectionClass
     {

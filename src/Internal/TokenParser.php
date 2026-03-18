@@ -30,7 +30,7 @@ use const T_WHITESPACE;
  *
  * @internal
  *
- * @psalm-type Token = array{0: int, 1: string, 2: int}|string
+ * @phpstan-type Token array{0: int, 1: string, 2: int}|string
  */
 final class TokenParser
 {
@@ -62,6 +62,7 @@ final class TokenParser
         // getDocBlock() on said class to return our long lost doc_comment. Argh.
         // To workaround, cause the parser to parse an empty docblock. Sure getDocBlock() will return this, but at least
         // it's harmless to us.
+        // @phpstan-ignore function.resultUnused
         token_get_all("<?php\n/**\n *\n */");
 
         $this->numTokens = count($this->tokens);
